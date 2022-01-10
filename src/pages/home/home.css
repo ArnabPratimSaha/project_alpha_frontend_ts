@@ -1,0 +1,209 @@
+
+.home-full-div
+{
+    position: relative;
+    top: 0;
+}
+::-webkit-scrollbar
+{
+    display: none;
+}
+.home-intro
+{
+    width: 100%;
+    position: relative;
+}
+.home-intro__title
+{
+    padding-top: 10rem;
+    text-align: left;
+    position: relative;
+    width: 80%;
+    left: 10%;
+}
+.home-intro__title h1
+{
+    letter-spacing: 3px;
+    text-transform: capitalize;
+    word-spacing: .7rem;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 3rem;
+    margin: 0;
+}
+.home-intro__title h2
+{
+    margin: 0;
+    padding: 0;
+    text-transform: lowercase;
+    font-size: 1.2rem;
+    font-weight: 400;
+}
+.bot-div
+{
+    width: 50%;
+    height: 30rem;
+    margin: 2rem auto;
+}
+.home-intro__add-div
+{
+    width: 60%;
+    margin: 1rem auto;
+    position: relative;
+}
+
+.home-intro__add-div h1
+{
+    text-transform: capitalize;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 2.5rem;
+    letter-spacing: 1px;
+    font-weight: 500;
+}
+
+.home-intro__add-div span:nth-child(2),.home-intro__add-div span:nth-child(3)
+{
+    padding: .5rem 2rem; 
+    margin: 0 2rem;
+    font-size: 1.5rem;
+    text-transform: uppercase;
+    font-weight: 500;
+    color: #fff;
+    border: 1px solid;
+    border-radius: 5px;
+    cursor: pointer;
+    position: relative;
+    font-family: 'Oswald', sans-serif;
+    z-index: 1;
+}
+.home-intro__add-div span:nth-child(2)::before,.home-intro__add-div span:nth-child(3)::before
+{
+    content: '';
+    background-color: gray;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    transform-origin: left;
+    transform: scaleX(0);
+    transition: transform 400ms ease-in-out;
+}
+.home-intro__add-div span:nth-child(2):hover::before,.home-intro__add-div span:nth-child(3):hover::before,
+.home-intro__add-div span:nth-child(2):focus::before,.home-intro__add-div span:nth-child(3):focus::before
+{
+    transform: scaleX(1);
+}
+.home-learn-more
+{
+    height: 40rem;
+}
+.bot-server-used-div
+{
+    padding:3rem 5rem 3rem ;
+    margin-top: 5rem;
+}
+.bot-server-used-div h1
+{
+    font-family: 'Oswald', sans-serif;
+    font-weight: 400;
+}
+.bot-server-used
+{
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+.bot-info-div
+{
+    padding:0 10%;
+    margin-top: 10rem;
+    position: relative;
+    padding-bottom: 10rem;
+}
+
+.bot-info-send-channel-info,.bot-info-send-dm-info,.bot-info-log
+{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-start;
+    align-content: center;
+}
+.bot-info-send-dm-info
+{
+    flex-wrap: wrap-reverse;
+    align-items: flex-end;
+    margin-top: 10rem
+}
+.bot-info-log
+{
+    margin-top: 10rem;
+}
+.send-channel-info__image,.send-dm-info__image,.bot-info-log__image
+{
+    width: 25rem;
+    height: 15rem;
+}
+.send-channel-info__image img,.send-dm-info__image img,.bot-info-log__image img
+{
+    width: 100%;
+    height: 100%;
+}
+.send-channel-info__text,.send-dm-info__text,.bot-info-log__text
+{
+    width: 40%;
+    text-align: left;
+}
+
+.send-channel-info__text h1,.send-dm-info__text h1,.bot-info-log__text h1
+{
+    font-size:1.5rem;
+    font-family: 'Comfortaa', cursive;
+    font-weight: 700;
+}
+@media only screen and (max-width: 900px) {
+    .bot-div
+    {
+        width: 100%;
+        height: 20rem;
+    }
+    .home-intro__title h1
+    {
+        font-size: 2rem;
+    }
+    .home-intro__title h2
+    {
+        font-size: .8rem;
+    }
+    .home-intro__add-div
+    {
+        width: 90%;
+    }
+    .home-intro__add-div span:nth-child(2),.home-intro__add-div span:nth-child(3)
+    {
+        margin: 0 .5rem;
+        padding: .5rem 1rem;
+        font-size: 1rem;
+    }
+    .bot-server-used-div
+    {
+        padding:2rem 1rem;
+        margin-top: 2rem;
+    }
+    .bot-server-used-div h1
+    {
+        font-size: 1rem;
+        font-weight: 400;
+        letter-spacing: 1px;
+    }
+    .bot-info-div
+    {
+
+    }
+    .send-channel-info__text,.send-dm-info__text,.bot-info-log__text
+    {
+        text-align: center;
+        width: 100%;
+    }
+}
