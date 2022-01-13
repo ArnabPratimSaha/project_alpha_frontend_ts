@@ -3,7 +3,7 @@ import { MODETYPE } from '../../hooks/useMode';
 import './loading.css';
 // import Navbar from '../../component/navbar/navbar';
 interface LoadingInterface{
-    mode:MODETYPE
+    mode:`${MODETYPE.DARK}`|`${MODETYPE.LIGHT}`
 }
 const Loading:FC<LoadingInterface>=({mode})=> {
     return (

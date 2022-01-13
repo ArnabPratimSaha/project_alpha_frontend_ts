@@ -3,7 +3,7 @@ import { MODETYPE } from '../../hooks/useMode';
 import RobotHead from '../robotHead/robotHead'
 import './footer.css';
 interface FooterInterface{
-    mode:MODETYPE
+    mode:`${MODETYPE.DARK}`|`${MODETYPE.LIGHT}`
 }
 const Footer:FC<FooterInterface>=({mode})=> {
     return (

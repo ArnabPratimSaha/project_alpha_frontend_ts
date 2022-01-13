@@ -35,7 +35,7 @@ const Home:FC<HomeInterface>=({mode})=> {
     
     useEffect(() => {
         axios.get(`${process.env.REACT_APP_BACKENDAPI}info?c=5`).then((res) => {
-            setServerInfo(res.data);
+            setServerInfo(res.data.guilds);
         }).catch((error) => { })
     }, [])
     return (

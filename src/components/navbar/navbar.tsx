@@ -13,7 +13,7 @@ interface NavbarInterface{
     mode:MODETYPE, 
     updateMode:()=>void,
     loading:boolean ,
-    status:STATUS,
+    status:`${STATUS.TEMPORARY}`|`${STATUS.NOT_AUTHORIZED}`|`${STATUS.PERMANENT}`,
     avatar?:string,
     userName?:string,
     userTag?:string,
