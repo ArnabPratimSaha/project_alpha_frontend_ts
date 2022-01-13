@@ -1,0 +1,59 @@
+.guild-button-fulldiv
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: yellowgreen; 
+    padding: 0 5px;
+    border: 1px solid transparent;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 5px;
+}
+.guild-button-fulldiv span
+{
+    background-color: #222;
+    color: #fff;
+    height: 2rem;
+    width: 2rem;
+    font-size: 1.3rem;
+    border: 1px solid transparent;
+    border-radius: 100%;
+}
+.guild-button-fulldiv img
+{
+    width: 2rem;
+    height: 2rem;
+    border: 1px solid transparent;
+    border-radius: 100%;
+    cursor: pointer;
+}
+.guild-button-fulldiv h3
+{
+    cursor: pointer;
+    font-weight: 400;
+    color: #fff;
+    margin-left: 5px;
+    font-size: 1rem;
+    font-family: 'Roboto Condensed', sans-serif;
+}
+@media only screen and (max-width: 900px) {
+    .guild-button-fulldiv
+    {
+        padding: 3px 5px;
+    }
+    .guild-button-fulldiv span
+    {
+        width: 1.5rem;
+        height: 1.5rem;
+    }
+    .guild-button-fulldiv img
+    {
+        width: 1.5rem;
+        height: 1.5rem;
+    }
+    .guild-button-fulldiv h3
+    {
+        font-size: .6rem;
+    }
+}

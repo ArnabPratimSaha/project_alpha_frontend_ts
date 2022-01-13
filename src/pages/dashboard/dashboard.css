@@ -1,0 +1,410 @@
+.dashboard-full-div
+{
+    position: relative;
+    padding-top: 10rem;
+    width: 100%;
+    height: 40rem;
+}
+.dashboard-full-div::-webkit-scrollbar
+{
+    display: none;
+}
+.dashboard-content-div
+{
+    height: 35rem;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+    background-color: #555;
+    border-bottom:1px solid black ;
+}
+.dashboard-leftright-wrapper-div
+{
+    position: absolute;
+    height: 90%;
+    top: 10%;
+    width: 100%;
+    overflow: hidden;
+}
+.dashboard-button-div
+{
+    height: 10%;
+    display: flex;
+    justify-content: stretch;
+    position: relative;
+    align-items: stretch;
+}
+.dashboard-button-div__button
+{
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: background-color 300ms ease-in-out,color 400ms ease-in-out;
+}
+/* .dashboard-button-div__button__icon
+{
+    color: #666;
+}
+.dashboard-button-div__button__icon:hover
+{
+    color: #333;
+} */
+.dashboard-button-div_underline
+{
+    width: calc(100%/6);
+    height: 5px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    background-color: #00bfff;
+    transition: left 300ms ease-in-out;
+}
+.dashboard-left-div
+{
+    position: absolute;
+    width: 60%;
+    height: 100%;
+}
+.dashboard-left-div-eachdiv__title
+{
+    font-size: 1.2rem;
+    padding: 0;
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+.dashboard-left-div__message-div
+{
+    background-color: inherit;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+
+}
+.dashboard-left-div__message-div__title
+{
+    width: 90%;
+}
+.dashboard-left-div__message-div__title input
+{
+    padding: 10px;
+    font-size: 1.5rem;
+    width: 100%;
+    background: transparent;
+    border: none;
+}
+.dashboard-left-div__message-div__title input:focus
+{
+    outline: none;
+}
+.dashboard-left-div__message-div__message
+{
+    width: 90%;
+    height: 60%;
+}
+.dashboard-left-div__message-div__message textarea
+{
+    padding: 10px;
+    font-size: 1.5rem;
+    width: 100%;
+    background: transparent;
+    border: none;
+    resize: none;
+}
+.dashboard-left-div__message-div__message textarea:focus
+{
+    outline: none;
+}
+.dashboard-left-div__guild-div
+{
+    background-color: inherit;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+}
+.dashboard-left-div__guild-div-select-div
+{
+    display: flex;
+    width: 60%;
+    align-items: center;
+}
+.dashboard-left-div__guild-div__titile
+{
+    display: flex;
+    align-items: center;
+    height: 4rem;
+    width: 95%;
+    justify-content: space-between;
+}
+.dashboard-left-div__guild-div__titile span
+{
+    font-family: 'Roboto Condensed', sans-serif;
+    font-size: 1.2rem;
+}
+.dashboard-left-div__guild-div__result
+{
+    width: 95%;
+    height: 60%;
+    padding: 15px;
+    box-sizing: border-box;
+}
+.dashboard-left-div__guild-div__result_wrapper
+{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    overflow-y: scroll;
+}
+.dashboard-left-div__guild-div__result_wrapper::-webkit-scrollbar
+{
+    width: 5px;
+}
+.dashboard-left-div__guild-div__result_wrapper::-webkit-scrollbar-track {
+    background: transparent;
+}
+.dashboard-left-div__guild-div__result_wrapper::-webkit-scrollbar-thumb {
+    background: rgb(202,202,202);
+    background: linear-gradient(114deg, rgba(202,202,202,0) 0%, rgba(68,68,68,1) 100%);
+    border-radius: 5px;
+ }
+.dashboard-left-div__role-div
+{
+    background-color: inherit;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+.dashboard-left-div__role-div__content
+{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 70%;
+    width: 90%;
+    align-items: center;
+    margin: 2rem auto;
+}
+.dashboard-left-div__channel-div__info
+{
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    color: #444;
+    width: 95%;
+}
+.dashboard-left-div__channel-div__info p
+{
+    font-size: .8rem;
+    margin: 0;
+    padding: 0;
+}
+.dashboard-left-div__channel-div
+{
+    background-color: inherit;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+.dashboard-left-div__channel-div__content
+{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 70%;
+    width: 90%;
+    align-items: center;
+    margin: 2rem auto;
+}
+.dashboard-left-div__channel-div__content-search
+{
+    width: 100%;
+}
+.dashboard-left-div__channel-div__content-search input
+{
+    padding: 10px;
+    font-size: 1.5rem;
+    width: 100%;
+    background: transparent;
+    border: none;
+}
+.dashboard-left-div__channel-div__content-search input:focus
+{
+    outline: none;
+}
+.dashboard-left-div__channel-div__content-result
+{
+    width: 100%;
+    height: 70%;
+    padding: 10px 0;
+}
+.dashboard-left-div__member-div
+{
+    background-color: inherit;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+.dashboard-left-div__final-div
+{
+    background-color: inherit;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    
+}
+.dashboard-right-div
+{
+    position: absolute;
+    width: 40%;
+    height: 100%;
+    z-index: 2;
+    transition: left 300ms ease-in-out;
+    display: flex;
+    flex-direction: column;
+    border-left: 1px solid #333;
+}
+.card-memberbutton
+{
+    margin: 0 5px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    font-size: .8rem;
+}
+.dashboard-left-div__final-div
+{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+.dashboard-left-div__final-div-datetime
+{
+    width: 90%;
+    margin: 20px auto 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+.dashboard-left-div__final-div-submit
+{
+    width: 90%;
+    margin: 15px auto 0 auto;
+    padding: 5px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+.dashboard-left-div__final-div-submit-preview
+{
+    display: flex;
+    align-items: center;
+    text-align: left;
+    margin-left: 15px;
+}
+.dashboard-left-div__final-div-submit-preview p
+{
+    font-size: .7rem;
+    font-weight: 600;
+
+}
+.dashboard-left-div__final-div-submit-datepicker
+{
+    width: 100%;
+    text-align: left;
+    margin: 15px 0;
+    display: flex;
+    justify-content: space-evenly;
+
+}
+.dashboard-left-div__final-div-submit-datetime-show
+{
+    display: flex;
+    justify-content: space-evenly;
+    width: 100%;
+}
+.react-calendar
+{
+    width: 13rem !important;
+}
+.custom-checkbox
+{
+    width: 10px;
+    height: 10px;
+    border: 2px solid #222;
+    border-radius: 3px;
+    cursor: pointer;
+    margin-right: 5px;
+}
+.custom-checkbox:hover
+{
+    box-shadow: 2px 2px 5px #555;
+}
+.submit-button
+{
+    margin-right: 15px;
+    height: 1.5rem;
+    padding: 0 20px;
+    background-color: rgb(151, 151, 151);
+    border: 1px solid transparent;
+    border-radius: 1px;
+    cursor: pointer;    
+}
+.submit-button:hover
+{
+    box-shadow: 2px 2px 5px #222;
+}
+.input-time-date
+{
+    border: 1px solid transparent;
+    border-radius: 5px;
+    background: #cacaca;
+    padding: 5px 10px;
+    width:15rem;
+    max-width: 80%;
+    transition: all 400ms ease-in-out;
+}
+.input-time-date:focus
+{
+    outline: none;
+    filter: drop-shadow(5px 5px 5px #333);
+}
+::-webkit-calendar-picker-indicator {
+    color: #444;
+    cursor: pointer;
+}
+@media only screen and (max-width: 900px) {
+    .dashboard-left-div__guild-div__titile
+    {
+        height: 1.5rem;
+    }
+    .dashboard-right-div
+    {
+        width: 80%;
+    }
+    .dashboard-left-div__guild-div__titile span
+    {
+        font-size: 1rem;
+    }
+    .input-time-date
+    {
+        width: 20rem;
+    }
+}

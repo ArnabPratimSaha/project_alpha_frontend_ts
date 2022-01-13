@@ -9,12 +9,13 @@ enum STATUS {
     PERMANENT = 'permanent',
     NOT_AUTHORIZED = 'notauthorized'
 }
-interface HeaderInterface{
-    id: string, accesstoken:string, refreshtoken:string
+interface HeaderInterface {
+    id: string, accesstoken: string, refreshtoken: string
 }
 function useAuthentication() {
-    const [status, setStatus] = useState(Cookies.get('temp_id') ? STATUS.TEMPORARY : Cookies.get('id') ? STATUS.PERMANENT : STATUS.NOT_AUTHORIZED);
-
+    const [status, setStatus] = useState<`${STATUS.TEMPORARY}` | `${STATUS.NOT_AUTHORIZED}` | `${STATUS.PERMANENT}`>(
+        Cookies.get('temp_id') ? STATUS.TEMPORARY : Cookies.get('id') ? STATUS.PERMANENT : STATUS.NOT_AUTHORIZED
+    );
     const [userName, setUserName] = useState(undefined);
     const [userId, setUserId] = useState(Cookies.get('temp_id') || Cookies.get('id') || undefined);
     const [userTag, setUserTag] = useState(undefined);
@@ -41,10 +42,10 @@ function useAuthentication() {
             return;
         }
         setIsLoading(true);
-        const header:AxiosRequestHeaders={
-            ['id']:userId?.toString()||'',
-            ['accesstoken']:accesstoken?.toString()||'',
-            ['refreshtoken']:refreshtoken?.toString()||''
+        const header: AxiosRequestHeaders = {
+            ['id']: userId?.toString() || '',
+            ['accesstoken']: accesstoken?.toString() || '',
+            ['refreshtoken']: refreshtoken?.toString() || ''
         }
         axios({
             url: `${process.env.REACT_APP_BACKENDAPI}user/info`,
@@ -54,9 +55,11 @@ function useAuthentication() {
             setIsLoading(false);
             const data = res.data;
             if (res.status === 200) {
-                Cookies.set(`${status === STATUS.TEMPORARY ? 'temp_id' : 'id'}`, data.userId);
-                Cookies.set(`${status === STATUS.TEMPORARY ? 'temp_accesstoken' : 'accesstoken'}`, data.accesstoken);
-                Cookies.set(`${status === STATUS.TEMPORARY ? 'temp_refreshtoken' : 'refreshtoken'}`, data.refreshtoken);
+                if (data.userId !== userId) {
+                    Cookies.set(`${status === STATUS.TEMPORARY ? 'temp_id' : 'id'}`, data.userId,{expires:365});
+                    Cookies.set(`${status === STATUS.TEMPORARY ? 'temp_accesstoken' : 'accesstoken'}`, data.accesstoken,{expires:365});
+                    Cookies.set(`${status === STATUS.TEMPORARY ? 'temp_refreshtoken' : 'refreshtoken'}`, data.refreshtoken,{expires:365});
+                }
                 setAccesstoken(data.accesstoken);
                 setRefreshtoken(data.refreshtoken);
                 setUserName(data.userName);
@@ -78,15 +81,15 @@ function useAuthentication() {
     const logout = async () => {
         try {
             setIsLoading(true);
-            const header:AxiosRequestHeaders={
-                ['id']:userId?.toString()||'',
-                ['accesstoken']:accesstoken?.toString()||'',
-                ['refreshtoken']:refreshtoken?.toString()||''
+            const header: AxiosRequestHeaders = {
+                ['id']: userId?.toString() || '',
+                ['accesstoken']: accesstoken?.toString() || '',
+                ['refreshtoken']: refreshtoken?.toString() || ''
             }
             const response = await axios({
                 url: `${process.env.REACT_APP_BACKENDAPI}user/logout`,
                 method: 'delete',
-                headers:header,
+                headers: header,
                 cancelToken: source.token
             });
             setIsLoading(false);
@@ -119,7 +122,17 @@ function useAuthentication() {
             }
         }
     }
-    return { status, STATUS, isLoading, userId, userName, userTag, avatar, discordId, accesstoken, refreshtoken, logout }
+    const updateAccesstoken = (token: string) => {
+        if (status === STATUS.TEMPORARY) {
+            Cookies.set('temp_accesstoken', token,{expires:365});
+            setAccesstoken(token);
+        }
+        if (status === STATUS.PERMANENT) {
+            Cookies.set('accesstoken', token,{expires:365});
+            setAccesstoken(token);
+        }
+    }
+    return { status, isLoading, userId, userName, userTag, avatar, discordId, accesstoken, refreshtoken, logout, updateAccesstoken }
 }
 
 export default useAuthentication
