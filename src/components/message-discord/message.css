@@ -1,0 +1,131 @@
+
+.message-fulldiv{
+    display: flex;
+    margin-top: 1rem;
+    justify-content: flex-start;
+    align-items: flex-start;
+    padding: 10px 1rem;
+    box-sizing: border-box;
+}
+.message-label{
+    position: relative;
+    z-index: 1;
+}
+.message-label::after
+{
+    content: '';
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    background-color: #49443C;
+}
+.message-label::before{
+    content: '';
+    position: absolute;
+    height: 100%;
+    width: 2px;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    background-color: #FAA81A;
+}
+.message-left-div{
+    margin: 0 10px;
+}
+.message-left-div img{
+    height: 2rem;
+    width: 2rem;
+    border-radius: 100%;
+}
+.message-right-div{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin: 0 10px;
+}
+.message-right-div-name{
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-end;
+}
+.message-right-div-name h1{
+    margin: 0;
+    padding: 0;
+    font-size: .9rem;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 400;
+}
+.message-right-div__bot{
+    font-size: .7rem;
+    background-color:rgb(88,101,242) ;
+    color: #fff;
+    padding: 2px;
+    border-radius: 4px;
+    margin-left: 5px;
+}
+.message-right-div__time{
+    font-size: .7rem;
+    color: #707070;
+    margin-left: 10px;
+}
+.message-right-div-mentions{
+    display: flex;
+}
+.message-right-div-mentions p{
+    margin: 1px 2px;
+    padding: 1px;
+    color: #fff;
+    background-color: #4E4D73;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.message-right-div-mentions p:hover
+{
+    text-decoration: underline;
+}
+.message-right-div_message span
+{
+    width: 30rem;
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
+    display: inline-block;
+    text-align: left ;
+}
+.message-right-div-author p{
+    margin: 0;
+    margin-top: 5px;
+    color: #fff;
+}
+.message-right-div-footer{
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+    border-radius: 5px;
+}
+.message-right-div-footer::after{
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 4px;
+    height: 100%;
+    background-color: #5865F2;
+}
+.message-right-div-footer h1{
+    font-size: .9rem;
+    margin: 0;
+    padding: 0;
+}
+.message-right-div-footer p{
+    font-size: .7rem;
+    margin: 5px 0 0 0;
+    padding: 0;
+}

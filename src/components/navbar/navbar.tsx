@@ -102,8 +102,8 @@ const Navbar:FC<NavbarInterface>=({ mode, updateMode,loading ,status,avatar,user
                     </NavLink>
                 </div>
                 <div className='navbar-credentials' style={{ color: mode === MODETYPE.DARK ? '#fff' : '#222', backgroundColor: mode === MODETYPE.DARK ? '#222' : '#a8a8a8' }}>
-                    {status===STATUS.NOT_AUTHORIZED && <button className='navbar-login' onClick={handleLogin}>Log in</button>}
-                    {status !== STATUS.NOT_AUTHORIZED && <div className='navbar-loggedin-div'>
+                    {!loading && status===STATUS.NOT_AUTHORIZED && <button className='navbar-login' onClick={handleLogin}>Log in</button>}
+                    { !loading && status !== STATUS.NOT_AUTHORIZED && <div className='navbar-loggedin-div'>
                         <div className='circle-image' >
                             <div className='circle-image__image'>
                                 <img src={avatar} onClick={handleFocus} alt='alternate'/>

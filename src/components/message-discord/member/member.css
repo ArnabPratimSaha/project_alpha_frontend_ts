@@ -1,0 +1,130 @@
+.dark-card {
+  color: #fff;
+  background-color: #18191c;
+}
+.light-card {
+  background-color: #fff;
+  color: #000;
+}
+.dark-shadder{
+    filter: drop-shadow(0 0 5px #222);
+}
+.light-shadder{
+    filter: drop-shadow(0 0 5px #555);
+}
+
+.discord-member-fulldiv {
+  position: relative;
+  background: transparent;
+  border: none;
+  padding: 0;
+  margin-right: 3px;
+}
+.discord-member-fulldiv_button {
+  padding: 2px;
+  color: #fff;
+  background-color: #4e4d73;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+.discord-member-fulldiv_button:hover {
+  background-color: #5c5a86;
+  outline: none;
+}
+.discord-member-overlay {
+  width: 16rem;
+  height: 20rem;
+  position: absolute;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 10px;
+  overflow: hidden;
+}
+.discord-member-overlay_top {
+  position: relative;
+  height: 4rem;
+  width: 100%;
+}
+.discord-member-overlay_top::after {
+  content: "";
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  background-color: #4e4d73;
+  z-index: -1;
+}
+.discord-member-overlay_top img {
+  height: 3rem;
+  width: 3rem;
+  border-radius: 100%;
+  border: 5px solid;
+  position: absolute;
+  left: 10%;
+  bottom: 0;
+  transform: translateY(50%);
+}
+.discord-member-overlay_info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 10px;
+  padding-top: 40px;
+  width: 100%;
+  box-sizing: border-box;
+}
+.discord-member-overlay_info_user {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.discord-member-overlay_info_user h2,
+h3 {
+  margin: 0;
+  padding: 0;
+}
+.discord-member-overlay_info_user h2 {
+  font-weight: 500;
+}
+.discord-member-overlay_info_user h3 {
+  color: #cacaca;
+  font-size: 0.9rem;
+  font-weight: 400;
+}
+.discord-member-overlay_underline {
+  width: 100%;
+  align-self: center;
+  height: 0.5px;
+  background-color: #6d6d6d;
+  margin: 10px 0;
+}
+.discord-member-overlay_roles {
+  display: flex;
+  flex-wrap: wrap;
+}
+.discord-member-overlay_roles__role {
+  background-color: #292b2f;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 5px;
+  margin: 4px;
+  margin-left: 0;
+}
+.discord-member-overlay_roles__role span {
+  height: 8px;
+  width: 8px;
+  border-radius: 100%;
+  margin-right: 3px;
+}
+.discord-member-overlay_roles__role p {
+  color: #fff;
+  background-color: transparent;
+}

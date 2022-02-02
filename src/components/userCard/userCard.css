@@ -3,17 +3,26 @@
     display: flex;
     justify-content: space-between;
     background-color: #fff;
+    color: #000;
     padding: 2px 10px;
     flex-wrap: wrap;
     align-items: center;
-    border-radius: 20px;
+    border-radius: 5px;
     margin: 5px;
+    margin-left: 0;
+}
+.dark-fulldiv{
+    background-color: #fff;
+    color: #000;
+}
+.light-fulldiv{
+    background-color: #333;
+    color: #fff;
 }
 .usercard-fulldiv p
 {
     margin: 0;
     padding: 0;
-    color: #000;
     font-weight: 400;
     cursor: default;
     font-family: 'Roboto Condensed', sans-serif;
@@ -29,7 +38,7 @@
 .usercard-closeDiv
 {
     cursor: pointer;
-    color: #545454;
+    color: #686868;
     font-size: .8rem;
 }
 .usercard-closeDiv:hover
