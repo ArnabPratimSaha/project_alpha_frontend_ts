@@ -15,12 +15,14 @@ import Error from './pages/error/error';
 // import Validation from './pages/discordValidation/validation';
 import { Loading,Authenticating } from './pages/loading/loading';
 import Authentication from './pages/authentication/authentication';
+import Message from './components/message-discord/message';
+import { Member, Role } from './interface/schema';
 
 const Home= lazy(()=>import( './pages/home/home'));
 const Dashboard =lazy(()=>import('./pages/dashboard/dashboard'));
 const Log =lazy(()=>import('./pages/log/log'));
 const PostPage =lazy(()=>import('./pages/fullPostPage/postPage')) ;
-
+const DashboardV2=lazy(()=>import('./pages/dashboard-v2/dashboard'));
 interface ProtectedRoutesInterface{
   status:`${STATUS.TEMPORARY}`|`${STATUS.NOT_AUTHORIZED}`|`${STATUS.PERMANENT}`,
   isLoading:boolean,
@@ -31,7 +33,21 @@ const ProtectedRoutes:FC<ProtectedRoutesInterface> = ({ status, isLoading, mode 
   if (!isLoading && status!==STATUS.NOT_AUTHORIZED)return <Outlet/>;
   return <>{window.location.href=`${process.env.REACT_APP_BACKENDAPI}auth/discord`}</>;
 };
-
+const role:Role={
+  name:'dadad',
+  id:'dawdad',
+  isAdmin:true,
+  color:'dawdawd'
+}
+const me:Member={
+  name:"arnab",
+  nickName:'alapon',
+  id:'adadadadawda',
+  isAdmin:true,
+  avatar:'dad',
+  tag:'dada',
+  roles:[role]
+}
 const App=() =>{
   const {mode, changeMode} = useMode();
   const {status,logout,userId,userName,userTag,avatar,discordId,accesstoken,refreshtoken,isLoading ,updateAccesstoken}=useAuthentication();
@@ -46,13 +62,15 @@ const App=() =>{
             <Route path='/auth/:id/:accesstoken/:refreshtoken' element={<Authentication mode={mode} />} />
             {/* <Route path='/val/:did/:sid/:page' element={<Validation mode={mode} MODETYPE={MODETYPE} />} /> */}
             <Route path='/learnmore' element={<div style={{ height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}></div>} />
+            {/* <Route path='/test' element={<Message mode={mode} members={[me,me]} author={me}/>} /> */}
             <Route element={<ProtectedRoutes status={status} isLoading={isLoading} mode={mode} />}>
-              <Route path='/dashboard/:uid/:did' element={<Dashboard mode={mode} status={status} updateAccesstoken={updateAccesstoken} userId={userId}  userName={userName} userTag={userTag} avatar={avatar} discordId={discordId} accesstoken={accesstoken} refreshtoken={refreshtoken} />} />
-                <Route path='/log/:uid/:did' element={<Log mode={mode} status={status} updateAccesstoken={updateAccesstoken} userId={userId}  userName={userName} userTag={userTag} avatar={avatar} discordId={discordId} accesstoken={accesstoken} refreshtoken={refreshtoken}  />} />
-                <Route path='/post/:mid' element={<PostPage mode={mode} status={status} updateAccesstoken={updateAccesstoken} userId={userId}  userName={userName} userTag={userTag} avatar={avatar} discordId={discordId} accesstoken={accesstoken} refreshtoken={refreshtoken} />} />
-              </Route>
-              <Route path={'*'} element={<ExtraRoute/>}/>
-            </Routes>
+              <Route path='/dashboard/:uid/:did' element={<Dashboard mode={mode} status={status} updateAccesstoken={updateAccesstoken} userId={userId} userName={userName} userTag={userTag} avatar={avatar} discordId={discordId} accesstoken={accesstoken} refreshtoken={refreshtoken} />} />
+              <Route path='/dash/:uid/:did' element={<DashboardV2 mode={mode} status={status} updateAccesstoken={updateAccesstoken} userId={userId} userName={userName} userTag={userTag} avatar={avatar} discordId={discordId} accesstoken={accesstoken} refreshtoken={refreshtoken} />} />
+              <Route path='/log/:uid/:did' element={<Log mode={mode} status={status} updateAccesstoken={updateAccesstoken} userId={userId} userName={userName} userTag={userTag} avatar={avatar} discordId={discordId} accesstoken={accesstoken} refreshtoken={refreshtoken} />} />
+              <Route path='/post/:mid' element={<PostPage mode={mode} status={status} updateAccesstoken={updateAccesstoken} userId={userId} userName={userName} userTag={userTag} avatar={avatar} discordId={discordId} accesstoken={accesstoken} refreshtoken={refreshtoken} />} />
+            </Route>
+            <Route path={'*'} element={<ExtraRoute />} />
+          </Routes>
           </Suspense>
         </Router>
       </div>

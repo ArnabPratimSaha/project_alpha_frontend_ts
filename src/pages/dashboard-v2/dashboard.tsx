@@ -6,6 +6,7 @@ import { BsFillChatDotsFill } from "react-icons/bs";
 import { IoIosMan } from "react-icons/io";
 import { GiOfficeChair, GiWifiRouter } from "react-icons/gi";
 import { AiFillSetting, AiFillWarning } from "react-icons/ai";
+import { BiLeftArrow } from "react-icons/bi";
 import Wrapper from "../../components/inputComponents/MultilineInputComponent";
 import CustomButton from './components/customButtom/customButton';
 import Card from '../../components/rightDrawerCardDiv/cardDiv';
@@ -25,6 +26,7 @@ import { MODETYPE } from "../../hooks/useMode";
 import { STATUS } from "../../hooks/useAuthentication";
 import useRequest from "../../hooks/useRequest";
 import Guild, { Channel, Member, Role } from "../../interface/schema";
+import Message from "../../components/message-discord/message";
 
 const type = {
   channel: 'CHANNEL',
@@ -243,6 +245,7 @@ const Dashboard: FC<DashboardInterface> = ({ mode, status, updateAccesstoken, us
 
   const [checked, setChecked] = useState(true)//getting the dm
   const [isReady, setIsReady] = useState(false)//ready to be sent
+  const [rightDivType,setRightDivType]=useState<"Left"|"Right">('Left');
   useEffect(() => {
     timer.current = setInterval(() => {
       setCounter((state) => state + 1)
@@ -402,19 +405,21 @@ const Dashboard: FC<DashboardInterface> = ({ mode, status, updateAccesstoken, us
   const handleClick = (id:string) => {
     setActiveButton(id)
   }
-  const handleSwitchChange = (position:'left'|'right') => {
-    setMessageType(position);
+  const handleSwitchChange = () => {  
+    setMessageType(s=>{
+      return s==='left'?'right':'left';
+    });
     setSelectedRoles([]);
     setSelectedChannels([]);
-    toast.info(`Switching to ${messageType.toUpperCase()} type`, {
-      position: "bottom-right",
-      autoClose: 2000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-    });
+    // toast.info(`Switching to ${messageType==='left'?'Channel':'DM'} type`, {
+    //   position: "bottom-right",
+    //   autoClose: 2000,
+    //   hideProgressBar: false,
+    //   closeOnClick: true,
+    //   pauseOnHover: true,
+    //   draggable: true,
+    //   progress: undefined,
+    // });
   }
   const handleToggleRightDiv = () => {
     changeIsRightDivSliderButtonClicked(!isRightDivSliderButtonClicked)
@@ -546,8 +551,11 @@ const Dashboard: FC<DashboardInterface> = ({ mode, status, updateAccesstoken, us
   const handleTimeChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     setSelectedTime(e.target.value)
   }
+  useEffect(()=>{
+    // console.log(messageType);
+  },[messageType])
   return (
-    <div>
+    <div className="dashboard-full-div srollbar-1" style={{ backgroundColor: mode === MODETYPE.DARK ? "#444" : "#cacacaca", }}>
       <ToastContainer
         position="bottom-right"
         autoClose={5000}
@@ -562,33 +570,39 @@ const Dashboard: FC<DashboardInterface> = ({ mode, status, updateAccesstoken, us
         style={{ fontSize: ".9rem" }}
       />
       <div
-        className="dashboard-full-div" style={{ backgroundColor: mode === MODETYPE.DARK ? "#444" : "#cacacaca", }}>
+        >
         <div className="dashboard-content-div">
           <div className='dashboard-button-div'
             style={{
               backgroundColor: "#CDD0CB",
-              width: leftDivWidthFull ? "100%" : "60%",
+              width: "100%",
             }}
           >
-            <CustomButton className='dashboard-button-div__button' id={'1'} onClick={handleClick} style={{ backgroundColor: activeButton === '1' ? '#cacaca' : '#555', color: activeButton === '1' ? '#00afff' : '#fff' }}>
+            <CustomButton className={`dashboard-button-div__button ${mode}-3 ${activeButton==='1'&& 'button-active-inverse'}`} id={'1'} onClick={handleClick}>
               <FaDiscord className='dashboard-button-div__button__icon' />
+              <p>servers</p>
             </CustomButton>
-            <CustomButton error={activeGuild ? messageType === 'left' ? false : true : true} count={channels && channels.length != 0 ? channels.length.toString() : undefined} className='dashboard-button-div__button' id={'2'} onClick={handleClick} style={{ backgroundColor: activeButton === '2' ? '#cacaca' : '#555', color: activeButton === '2' ? '#00afff' : '#fff' }}>
+            <CustomButton error={activeGuild ? messageType === 'left' ? false : true : true} count={channels && channels.length != 0 ? channels.length.toString() : undefined} className={`dashboard-button-div__button ${mode}-3 ${activeButton==='2'&& 'button-active-inverse'}`} id={'2'} onClick={handleClick}>
               <GiWifiRouter className='dashboard-button-div__button__icon' />
+              <p>channels</p>
             </CustomButton>
-            <CustomButton error={activeGuild ? messageType === 'left' ? false : true : true} count={roles && roles.length != 0 ? roles.length.toString() : undefined} className='dashboard-button-div__button' id={'3'} onClick={handleClick} style={{ backgroundColor: activeButton === '3' ? '#cacaca' : '#555', color: activeButton === '3' ? '#00afff' : '#fff' }}>
+            <CustomButton error={activeGuild ? messageType === 'left' ? false : true : true} count={roles && roles.length != 0 ? roles.length.toString() : undefined} className={`dashboard-button-div__button ${mode}-3 ${activeButton==='3'&& 'button-active-inverse'}`} id={'3'} onClick={handleClick}>
               <GiOfficeChair className='dashboard-button-div__button__icon' />
+              <p>roles</p>
             </CustomButton>
-            <CustomButton error={activeGuild ? false : true} className='dashboard-button-div__button' id={'4'} onClick={handleClick} style={{ backgroundColor: activeButton === '4' ? '#cacaca' : '#555', color: activeButton === '4' ? '#00afff' : '#fff' }}>
+            <CustomButton error={activeGuild ? false : true} className={`dashboard-button-div__button ${mode}-3 ${activeButton==='4'&& 'button-active-inverse'}`} id={'4'} onClick={handleClick} >
               <IoIosMan className='dashboard-button-div__button__icon' />
+              <p>members</p>
             </CustomButton>
-            <CustomButton error={activeGuild ? false : true} className='dashboard-button-div__button' id={'5'} onClick={handleClick} style={{ backgroundColor: activeButton === '5' ? '#cacaca' : '#555', color: activeButton === '5' ? '#00afff' : '#fff' }}>
+            <CustomButton error={activeGuild ? false : true}  className={`dashboard-button-div__button ${mode}-3 ${activeButton==='5'&& 'button-active-inverse'}`} id={'5'} onClick={handleClick}>
               <BsFillChatDotsFill className='dashboard-button-div__button__icon' />
+              <p>message</p>
             </CustomButton>
-            <CustomButton error={activeGuild ? false : true} className='dashboard-button-div__button' id={'6'} onClick={handleClick} style={{ backgroundColor: activeButton === '6' ? '#cacaca' : '#555', color: activeButton === '6' ? '#00afff' : '#fff' }}>
+            <CustomButton error={activeGuild ? false : true} className={`dashboard-button-div__button ${mode}-3 ${activeButton==='6'&& 'button-active-inverse'}`} id={'6'} onClick={handleClick}>
               <AiFillSetting className='dashboard-button-div__button__icon' />
+              <p>time & date</p> 
             </CustomButton>
-            {leftDivWidthFull && <CustomButton className='dashboard-button-div__button' id={'7'} onClick={handleToggleRightDiv}>
+            {leftDivWidthFull && <CustomButton className={`dashboard-button-div__button ${mode}-3 ${activeButton==='7'&& 'button-active-inverse'}`} id={'7'} onClick={handleToggleRightDiv}>
               <FaArrowAltCircleLeft className='dashboard-button-div__button__icon' />
             </CustomButton>}
             <span className='dashboard-button-div_underline'
@@ -609,7 +623,7 @@ const Dashboard: FC<DashboardInterface> = ({ mode, status, updateAccesstoken, us
                   <input placeholder="a" type={'text'}  onFocus={() => { setFocusOne(true) }} onBlur={() => { setFocusOne(false) }} value={title} onChange={(e) => { setTitle(e.target.value) }}/>
                 </Wrapper>
                 <Wrapper label='message' isFocused={focusTwo} classFulldiv='dashboard-left-div__message-div__message'>
-                  <textarea placeholder="b" onFocus={() => { setFocusTwo(true) }} onChange={handleTextareaChange} onBlur={() => { setFocusTwo(false) }}></textarea>
+                  <textarea placeholder="Enter Your Message here" onFocus={() => { setFocusTwo(true) }} onChange={handleTextareaChange} onBlur={() => { setFocusTwo(false) }}></textarea>
                 </Wrapper>
               </div>
               <div className='dashboard-left-div__guild-div' style={{ zIndex: activeButton === '1' ? '1' : '0' }}>
@@ -621,7 +635,7 @@ const Dashboard: FC<DashboardInterface> = ({ mode, status, updateAccesstoken, us
                     <span>Selected server :</span>
                     {activeGuild ? <GuildButton mode={mode} id={activeGuild.guildID} guildName={activeGuild.guildName} avatar={activeGuild.guildAvater} onClick={() => { }} /> : "none"}
                   </div>
-                  {/* <Switch left='Channel' right='DM' position={messageType} onChange={handleSwitchChange} /> */}
+                  <Switch left='Channel' right='DM' position={messageType} onChange={handleSwitchChange} />
                 </div>
                 <Wrapper label='discord servers' classFulldiv='dashboard-left-div__guild-div__result'>
                   <div className='dashboard-left-div__guild-div__result_wrapper'>
@@ -707,101 +721,84 @@ const Dashboard: FC<DashboardInterface> = ({ mode, status, updateAccesstoken, us
               </div>
             </div>
             <div
-              className="dashboard-right-div"
+              className={`dashboard-right-div ${mode}-discord scrollbar-1`}
               style={{
-                backgroundColor: mode === MODETYPE.DARK ? "#777" : "#cacaca",
-                left: leftDivWidthFull ? isRightDivSliderButtonClicked ? '20%' : '100%' : '60%',
+                left: leftDivWidthFull ? isRightDivSliderButtonClicked ? '0%' : '100%' : '60%',
               }}
             >
-              <Card
-                contentHeight={getContentHeight(rightDrawerState, 1).toString()}
-                textColor={mode === MODETYPE.DARK ? '#fff' : '#000'}
-                headerBackgroundColor={mode === MODETYPE.DARK ? '#333' : '#666'}
-                backgroundColor={mode === MODETYPE.DARK ? '#555' : '#cacaca'}
-                isOpen={rightDrawerState.isFirstDrawerOpen}
-                top="0"
-                headerTitle="members"
-                onClick={() => {
-                  if (
-                    !rightDrawerState.isThirdDrawerOpen &&
-                    !rightDrawerState.isSecondDrawerOpen
-                  )
-                    return;
-                  rightDrawerDispatch({ rightDrawer: 1 });
-                }}
-              >
-                {selectedMembers && selectedMembers.map((c) => {
-                  return (
-                    <MemberButton
-                      classNameChildrenDiv='card-memberbutton'
-                      style={{ backgroundColor: "#545454", color: "#fff" }}
-                      type="remove"
-                      nickName={c.nickName}
-                      img={c.avatar}
-                      userName={c.name}
-                      userTag={c.tag}
-                      id={c.id}
-                      key={c.id}
-                      mode={mode}
-                      onClick={(id) => {
-                        setSelectedMembers(
-                          selectedMembers.filter((e) => e.id != id)
-                        );
-                      }}
-                    >
-                      {c.isAdmin && <AdminIcon style={{ padding: "0 5px", fontWeight: 700 }} />}
-                      {c.roles.find(r=>selectedRoles.includes(r)) && <AiFillWarning style={{ color: 'yellow', fontSize: "1rem" }} />}
-                    </MemberButton>
-                  );
-                })}
-              </Card>
-              <Card
-                contentHeight={getContentHeight(rightDrawerState, 2).toString()}
-                textColor={mode === MODETYPE.DARK ? '#fff' : '#000'}
-                headerBackgroundColor={mode === MODETYPE.DARK ? '#333' : '#666'}
-                backgroundColor={mode === MODETYPE.DARK ? '#555' : '#cacaca'}
-                isOpen={rightDrawerState.isSecondDrawerOpen}
-                top={getValue(calculateTop(rightDrawerState, 2).toString(), 2).toString()}
-                headerTitle="roles"
-                onClick={() => {
-                  if (
-                    !rightDrawerState.isThirdDrawerOpen &&
-                    !rightDrawerState.isFirstDrawerOpen
-                  )
-                    return;
-                  rightDrawerDispatch({ rightDrawer: 2 });
-                }}
-              >
-                {selectedRoles && selectedRoles.map(e => {
-                  return <TouchableCard id={e.id} title={<>{e.name}{e.isAdmin && <AdminIcon />}</>} key={e.id} onClick={(id:string) => {
-                    setSelectedRoles(selectedRoles.filter(e => e.id != id))
-                  }} />
-                })}
-              </Card>
-              <Card
-                contentHeight={getContentHeight(rightDrawerState, 3).toString()}
-                textColor={mode === MODETYPE.DARK ? '#fff' : '#000'}
-                headerBackgroundColor={mode === MODETYPE.DARK ? '#333' : '#666'}
-                // color={mode === MODETYPE.DARK ? '#cacaca' : '#222'}
-                backgroundColor={mode === MODETYPE.DARK ? '#555' : '#cacaca'}
-                isOpen={rightDrawerState.isThirdDrawerOpen}
-                top={getValue(calculateTop(rightDrawerState, 3).toString(), 3)}
-                headerTitle="channels"
-                onClick={() => {
-                  if (
-                    !rightDrawerState.isFirstDrawerOpen &&
-                    !rightDrawerState.isSecondDrawerOpen
-                  )
-                    return;
-                  rightDrawerDispatch({ rightDrawer: 3 });
-                }}
-              >
-                {selectedChannels && selectedChannels.map(e => {
-                  return <TouchableCard id={e.channelId} title={e.channelName} key={e.channelId} onClick={id => {
-                    setSelectedChannels(selectedChannels.filter(e => e.channelId != id))
-                  }} />
-                })}
-              </Card>
+              <div className={`dashboard-right-div-button ${mode}-2`}>
+                <div className={`button__tags  ${rightDivType==='Left'?'button-active':'button-inactive' }`} onClick={()=>setRightDivType('Left')}>
+                  Tags
+                </div>
+                <div className={`button__preview  ${rightDivType==='Right'?'button-active':'button-inactive' }`} onClick={()=>setRightDivType('Right')}>
+                  Preview
+                </div>
+              </div>
+              <div className="dashboard-right-div_moveable" style={{zIndex:rightDivType==='Left'?'2':'1'}}>
+                <div className={`right-div-tags ${mode} ${mode}-discord scrollbar-1`}>
+                  {messageType === 'left' &&
+                    <><div className={`right-div__channels`}>
+                      <div className="right-div__channels_title">
+                        <p>channels</p>
+                        <span className={`${mode}_inverse`}></span>
+                        <BiLeftArrow/>
+                      </div>
+                      <div className="right-div__channels_container">
+                        {selectedChannels.map(c=><TouchableCard 
+                          mode={mode} 
+                          key={c.channelId} 
+                          id={c.channelId} 
+                          title={c.channelName}
+                          onClick={(id)=>{
+                            setSelectedChannels(s=>s.filter(c=>c.channelId!==id))
+                        }} />)}
+                      </div>
+                    </div>
+                      <div className="right-div_roles">
+                        <div className="right-div__roles_title">
+                          <p>roles</p>
+                          <span className={`${mode}_inverse`}></span>
+                          <BiLeftArrow/>
+                        </div>
+                        <div className="right-div__roles_container">
+                          {selectedRoles.map(c=><TouchableCard 
+                            mode={mode}
+                            key={c.id} 
+                            id={c.id} 
+                            title={c.name}
+                            onClick={(id)=>{
+                              setSelectedRoles(s=>s.filter(r=>r.id!==id))
+                          }} />)}
+                        </div>
+                      </div>
+                    </>
+                 }
+                  <div className="right-div_members">
+                    <div className="right-div__members_title">
+                      <p>members</p>
+                      <span className={`${mode}_inverse`}></span>
+                      <BiLeftArrow />
+                    </div>
+                    <div className="right-div__members_container">
+                      {selectedMembers.map(c => <MemberButton
+                        mode={mode}
+                        key={c.id}
+                        id={c.id}
+                        nickName={c.nickName}
+                        userName={c.name}
+                        img={c.avatar}
+                        userTag={c.tag}
+                        type={'remove'}
+                        onClick={(id) => {
+                          setSelectedMembers(s => s.filter(r => r.id !== id))
+                        }} />)}
+                    </div>
+                  </div>
+                </div>
+                <div className={`right-div-preview ${mode}`} style={{zIndex:rightDivType==='Right'?'2':'1'}}>
+                  <Message mode={mode} message={message} members={selectedMembers} />
+                </div>
+              </div>
             </div>
           </div>
         </div>

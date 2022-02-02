@@ -1,0 +1,10 @@
+.custombutton-fulldiv
+{
+    position: relative;
+}
+.custom-button-error
+{
+    position: absolute;
+    right: 0;
+    bottom: 0;
+}

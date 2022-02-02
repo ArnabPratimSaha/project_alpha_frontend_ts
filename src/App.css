@@ -1,7 +1,6 @@
 .App {
   text-align: center;
 }
-
 .App-logo {
   height: 40vmin;
   pointer-events: none;
@@ -12,14 +11,15 @@
     animation: App-logo-spin infinite 20s linear;
   }
 }
-@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Syne+Mono&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;500;600&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@200;400;500;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&family=Roboto+Condensed&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Pacifico&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Syne+Mono&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;500;600&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Oswald:wght@200;400;500;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&family=Roboto+Condensed&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;1,100;1,300;1,400;1,500;1,900&display=swap");
 .App-header {
   background-color: #282c34;
   min-height: 100vh;
@@ -30,16 +30,87 @@
   font-size: calc(10px + 2vmin);
   color: white;
 }
-
-.App-link {
-  color: #61dafb;
+.dark {
+  background-color: #36393f;
+  color: #cacaca;
 }
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.light {
+  background-color: #fff;
+  color: #000;
+}
+.dark-2 {
+  background-color: #747474;
+  color: #cacaca;
+}
+.light-2 {
+  background-color: #cacaca;
+  color: #222;
+}
+.dark-3 {
+  background-color: #222831;
+  color: #f8f8f8;
+}
+.light-3 {
+  background-color: #afafaf;
+  color: #000;
+}
+.dark-4 {
+  background-color: #2D4059;
+  color: #fff;
+}
+.light-4 {
+  background-color: #cacaca;
+  color: #000;
+}
+.dark-discord {
+  background-color: #36393f;
+  color: #cacaca;
+}
+.light-discord {
+  background-color: #ffff;
+  color: #333;
+}
+.dark-discord_embeded {
+  background-color: #2f3136;
+  color: #fff;
+}
+.light-discord_embeded {
+  background-color: #f2f3f5;
+  color: #222;
+}
+.scrollbar-1::-webkit-scrollbar {
+  width: 5px;
+  display: block;
+}
+.scrollbar-1::-webkit-scrollbar-track {
+  background: transparent;
+}
+.scrollbar-1::-webkit-scrollbar-thumb {
+  background: rgb(202, 202, 202);
+  background: linear-gradient(
+    114deg,
+    rgba(202, 202, 202, 0) 0%,
+    rgba(68, 68, 68, 1) 100%
+  );
+  border-radius: 5px;
+}
+.button-active{
+  background-color: #FF4C29;
+  color: #fff;
+}
+.button-active-inverse{
+  background-color: #fff;
+  color: #FF4C29;
+}
+.button-inactive{
+  background-color: transparent;
+  color: #222;
+}
+.dark_inverse {
+  background-color: #fff;
+  color: #000;
+}
+.light_inverse {
+  background-color: #36393f;
+  color: #cacaca;
 }
