@@ -4,8 +4,8 @@
     margin-top: 1rem;
     justify-content: flex-start;
     align-items: flex-start;
-    padding: 10px 1rem;
     box-sizing: border-box;
+    width: 100%;
 }
 .message-label{
     position: relative;
@@ -33,7 +33,7 @@
     background-color: #FAA81A;
 }
 .message-left-div{
-    margin: 0 10px;
+    justify-self: flex-start;
 }
 .message-left-div img{
     height: 2rem;
@@ -46,6 +46,8 @@
     flex-direction: column;
     align-items: flex-start;
     margin: 0 10px;
+    width: 80%;
+    word-wrap: break-word;
 }
 .message-right-div-name{
     display: flex;
@@ -74,6 +76,7 @@
 }
 .message-right-div-mentions{
     display: flex;
+    flex-wrap: wrap;
 }
 .message-right-div-mentions p{
     margin: 1px 2px;
@@ -87,13 +90,44 @@
 {
     text-decoration: underline;
 }
-.message-right-div_message span
+.role-memtion-div
 {
-    width: 30rem;
+    position: relative;
+    margin-right: 3px;
+    margin-bottom: 3px;
+}
+.role-memtion-div__overlay
+{
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    opacity: .1;
+    border-radius: 2px;
+}
+.message-right-div_message{
+    width: 100%;
+    height: 100%;
+    align-self: flex-start;
+    display: block;
+    text-align: left;
+    height: auto;
+    word-wrap: break-word ;
+}
+.message-right-div_message p
+{
+    margin: 0;
+    padding: 0;
+    font-weight: 900;
     white-space: pre-wrap;
     overflow-wrap: break-word;
     display: inline-block;
     text-align: left ;
+    background-color: transparent;
+}
+.message-right-div_message span
+{
+    text-align: left;
+    white-space: pre-wrap;
 }
 .message-right-div-author p{
     margin: 0;
@@ -128,4 +162,9 @@
     font-size: .7rem;
     margin: 5px 0 0 0;
     padding: 0;
+}
+@media only screen and (max-width: 800px) {
+    .message-right-div{
+        /* width: 16rem; */
+    }
 }

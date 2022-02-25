@@ -1,0 +1,56 @@
+.default
+{
+    background: #fff;
+    color: #222;
+}
+.danger{
+    background: #ff2b2b;
+    color: #fff;
+}
+.confirmationButton-fulldiv
+{
+    position: relative;
+    background: transparent;
+    border: none;
+}
+.confirmationButton-button
+{
+    border: none;
+    border-radius: 2px;
+    padding: 3px 5px;
+    box-sizing: border-box;
+    cursor: pointer;
+}
+.confirmationButton-fulldiv:focus,.confirmationButton-button:focus{
+    outline: none;
+}
+.confirmationButton-option{
+    position: absolute;
+    z-index: 2;
+    left: 50%;
+    top: 0;
+    transform: translate(-50%,-100%);
+    border-radius: 2px;
+    overflow: hidden;
+    display: flex;
+    padding: 2px;
+    row-gap: 2px;
+}
+.confirmationButton-option span
+{
+    padding: 3px 5px;
+    cursor: pointer;
+    position: relative;
+    box-sizing: border-box;
+    background: #cacaca;
+    color: #222;
+    flex: 1;
+    font-size: 1.1rem;
+    border-radius: 5px;
+    margin: 0 1px;
+}
+.confirmationButton-option span:hover{
+    background-color: #9c9c9c;
+    color: #000;
+    transform: translate(-2px,-2px);
+}

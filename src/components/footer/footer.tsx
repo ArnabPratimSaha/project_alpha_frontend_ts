@@ -18,22 +18,21 @@ const Footer:FC<FooterInterface>=({mode})=> {
             </div>
             <div className='footer-right-div' style={{color:mode===MODETYPE.DARK?'#fff':'#000'}}>
                 <div className='footer-right-div__one'>
-                    <p >Heading Placeholder</p>
-                    <a href="#">Placeholder</a>
-                    <a href="#">Placeholder</a>
-                    <a href="#">Placeholder</a>
+                    <p >Home</p>
+                    <a href="#">Intro</a>
+                    <a href="#">Popular Servers</a>
+                    <a href="#">Features</a>
                 </div>
                 <div className='footer-right-div__two' style={{color:mode===MODETYPE.DARK?'#fff':'#000'}}>
-                    <p >Heading Placeholder</p>
-                    <a href="#">Placeholder</a>
-                    <a href="#">Placeholder</a>
-                    <a href="#">Placeholder</a>
+                    <p >Dashboard</p>
+                    <a href="#">Direct Message</a>
+                    <a href="#">Channel Message</a>
                 </div>
                 <div className='footer-right-div__three' style={{color:mode===MODETYPE.DARK?'#fff':'#000'}}>
-                    <p >Heading Placeholder</p>
-                    <a href="#">Placeholder</a>
-                    <a href="#">Placeholder</a>
-                    <a href="#">Placeholder</a>
+                    <p >Log</p>
+                    <a href="#">History</a>
+                    <a href="#">Favourite</a>
+                    <a href="#">Manage Message</a>
                 </div>
             </div>
         </div>

@@ -19,7 +19,7 @@ import Message from './components/message-discord/message';
 import { Member, Role } from './interface/schema';
 
 const Home= lazy(()=>import( './pages/home/home'));
-const Dashboard =lazy(()=>import('./pages/dashboard/dashboard'));
+const Dashboard =lazy(()=>import('./pages/dashboard-v2/dashboard'));
 const Log =lazy(()=>import('./pages/log/log'));
 const PostPage =lazy(()=>import('./pages/fullPostPage/postPage')) ;
 const DashboardV2=lazy(()=>import('./pages/dashboard-v2/dashboard'));
@@ -52,7 +52,7 @@ const App=() =>{
   const {mode, changeMode} = useMode();
   const {status,logout,userId,userName,userTag,avatar,discordId,accesstoken,refreshtoken,isLoading ,updateAccesstoken}=useAuthentication();
   return (
-      <div className="App">
+      <div className={`App scrollbar-1`}>
         <Router>
             <Navbar loading={isLoading} userId={userId} discordId={discordId}  status={status} userName={userName} userTag={userTag} avatar={avatar} mode={mode} updateMode={changeMode} onLogout={logout}/>
             <Suspense fallback={<Loading mode={mode}/>}>

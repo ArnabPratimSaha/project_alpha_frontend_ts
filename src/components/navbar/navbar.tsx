@@ -77,7 +77,7 @@ const Navbar:FC<NavbarInterface>=({ mode, updateMode,loading ,status,avatar,user
     }
     return (
         <div className='navbar-fulldiv'>
-            <div className='main-body' style={{ height: shrink ? '3.5rem' : '5rem', backgroundColor: mode === MODETYPE.DARK ? '#222' : '#a8a8a8' }}>
+            <div className='main-body' style={{ height: shrink ? '3.5rem' : '4rem', backgroundColor: mode === MODETYPE.DARK ? '#222' : '#a8a8a8' }}>
                 <div className='navbar-overlay' style={{ backgroundColor: mode === MODETYPE.DARK ? '#222' : '#a8a8a8' }}></div>
                 <div className='navbar-svg' style={{ backgroundColor: mode === MODETYPE.DARK ? '#222' : '#a8a8a8' }}>
                     <h1 style={{ color: mode === MODETYPE.DARK ? '#cacaca' : '#333' }}>VIVI</h1>

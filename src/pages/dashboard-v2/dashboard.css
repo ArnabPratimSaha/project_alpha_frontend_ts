@@ -1,9 +1,10 @@
 .dashboard-full-div
 {
     position: relative;
-    padding-top: 10rem;
+    padding-top: 7rem;
     width: 100%;
-    height: 40rem;
+    box-sizing: border-box;
+    height: 100vh;
 }
 ::-webkit-scrollbar
 {
@@ -15,8 +16,6 @@
     width: 100%;
     position: relative;
     overflow: hidden;
-    background-color: #555;
-    border-bottom:1px solid black ;
 }
 .dashboard-leftright-wrapper-div
 {
@@ -57,7 +56,7 @@
     position: absolute;
     bottom: 0;
     left: 0;
-    background-color: #ff4b28;
+    background-color: #2935bb;
     transition: left 300ms ease-in-out;
 }
 .dashboard-left-div
@@ -203,7 +202,6 @@
     display: flex;
     flex-direction: column;
     text-align: left;
-    color: #444;
     width: 95%;
 }
 .dashboard-left-div__channel-div__info p
@@ -276,7 +274,6 @@
     height: 100%;
     z-index: 2;
     transition: left 300ms ease-in-out;
-    border-left: 1px solid #333;
     display: flex;
     flex-direction: column;
 }
@@ -299,12 +296,32 @@
     flex: 1;
     background-color: thistle;
 }
+.right-div__overlay{
+    position: relative;
+}
+
+.right-div__overlay::after
+{
+    content: '';
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background-color: #dddddd;
+    z-index: -1;
+    opacity: 0;
+    padding: 0 5px;
+    border-radius: 2px;
+}
+.right-div__overlay:hover.right-div__overlay::after{
+    opacity: .4;
+}
 .right-div-tags,.right-div-preview{
     position: absolute;
     height: 100%;
     width: 100%;
     padding: 10px;
     box-sizing: border-box;
+    overflow-y: scroll;
 }
 .right-div-tags{
     z-index: 2;
@@ -341,6 +358,9 @@
 {
     display: flex;
     flex-wrap: wrap;
+    overflow-y: hidden;
+    padding-left: 10px;
+    box-sizing: border-box;
 }
 .card-memberbutton
 {
@@ -366,9 +386,9 @@
 }
 .dashboard-left-div__final-div-submit
 {
-    width: 90%;
-    margin: 15px auto 0 auto;
-    padding: 5px 0;
+    width: 100%;
+    margin: 0;
+    margin-top: 1.5rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -453,6 +473,10 @@
     cursor: pointer;
 }
 @media only screen and (max-width: 900px) {
+    .dashboard-full-div
+    {
+        height: fit-content;
+    }
     .dashboard-left-div__guild-div__titile
     {
         height: 1.5rem;

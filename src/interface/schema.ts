@@ -26,7 +26,7 @@ interface Member {
 interface Log {
     messageId: string,
     targetGuild: string,
-    type: 'all'|'dm',
+    type: 'dm'|'channel',
     channels?: Array<string>,
     members?: Array<string>,
     roles?: Array<string>,
@@ -38,7 +38,7 @@ interface Log {
     preview?: boolean,
     status: 'PROCESSING'|'CANCELLED'|'SENT',
     favourite:boolean,
-    guildData?:{name:string,id:string,avatar?:string}
+    guildData?:{name:string,icon?:string}
 }
 export default Guild 
 export {Channel,Role,Member,Log}

@@ -39,7 +39,7 @@ const Home:FC<HomeInterface>=({mode})=> {
         }).catch((error) => { })
     }, [])
     return (
-        <div className='home-full-div' style={{ backgroundColor: mode === MODETYPE.DARK ? '#444' : '#cacacaca' }}>
+        <div className={`home-full-div scrollbar-${mode}`} style={{ backgroundColor: mode === MODETYPE.DARK ? '#444' : '#cacacaca' }}>
             <div className='home-intro' >
                 <div className='home-intro__title' style={{ color: mode === MODETYPE.DARK ? '#fff' : '#233' }}>
                     <h1>Let Vivi handle your announcement's</h1>

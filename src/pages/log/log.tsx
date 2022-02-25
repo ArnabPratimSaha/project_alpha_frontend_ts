@@ -11,6 +11,9 @@ import { MODETYPE } from "../../hooks/useMode";
 import { STATUS } from "../../hooks/useAuthentication";
 import useRequest from "../../hooks/useRequest";
 import { Log } from "../../interface/schema";
+import BoxBar from '../../components/boxBar/boxBar';
+import './color.css';
+
 
 var newDate = new Date();
 var numberOfDaysToAdd = 1;
@@ -32,9 +35,13 @@ interface LogInterface {
     accesstoken?: string,
     refreshtoken?: string
 }
+interface CustomLog extends Log{
+    guildName:string,
+    guildAvatar:string
+}
 const LogPage: FC<LogInterface> = ({ mode, status, updateAccesstoken, userId, userName, userTag, avatar, discordId, accesstoken, refreshtoken }) => {
     let { uid, did } = useParams();
-    const { makeRequst, loading } = useRequest(status, updateAccesstoken)
+    const { makeRequst, loading } = useRequest(status, updateAccesstoken);
     const [activePage, setActivePage] = useState<Page>('ALL')//page thats active
     const [filter, setFilter] = useState<toggleIndex>('all')//current selected filter index
     const [pageIndex, setPageIndex] = useState(1)
@@ -68,15 +75,35 @@ const LogPage: FC<LogInterface> = ({ mode, status, updateAccesstoken, userId, us
                 headers: header,
                 cancelTokenSource: source,
                 query: {
-                    limit: 2,
+                    limit: 8,
                     page: pageIndex,
                     status: filter.toUpperCase(),
                     did: discordId,
-                    query: query
+                    query: query,
+                    fav:activePage==='FAVOURITE'?true:false
                 }
             }).then(res => {
                 if (res?.status === 200) {
-                    const data: Array<Log> = res.data.log || [];
+                    const data: Array<Log> = res.data.log.map((l:any)=>{
+                        var temp: Log = {
+                            messageId: l.message.messageId,
+                            targetGuild: l.message.targetGuild,
+                            type: l.message.type,
+                            channels: l.message.channels,
+                            members: l.message.members,
+                            roles: l.message.roles,
+                            title: l.message.title,
+                            message: l.message.message,
+                            sender: l.message.sender,
+                            createTime: l.message.createTime,
+                            delivertime: l.message.delivertime,
+                            preview: l.message.preview,
+                            status: l.message.status,
+                            favourite: l.message.favourite,
+                            guildData: { name: l.guildData.name,icon:l.guildData.icon }
+                        }
+                        return temp;
+                    }) || [];
                     setLog(l => [...l, ...data]);
                     setHasMoreLog(data.length>0)
                 }
@@ -89,7 +116,7 @@ const LogPage: FC<LogInterface> = ({ mode, status, updateAccesstoken, userId, us
         return () => {
             source.cancel('canceling the request');
         }
-    }, [pageIndex,query])
+    }, [pageIndex,query,filter,activePage])
     useEffect(() => {
         setPageIndex(1);
         setLog([]);
@@ -125,7 +152,7 @@ const LogPage: FC<LogInterface> = ({ mode, status, updateAccesstoken, userId, us
         }
     }
     return (
-        <div className='log-body' style={{ backgroundColor: mode === MODETYPE.DARK ? "#333" : "#cacaca", }}>
+        <div className={`log-body ${mode}-top`} >
             <div className='log-history' >
                 <div className='log-history-setting' style={{ borderColor: mode === MODETYPE.DARK ? "#cacaca" : "#333", }}>
                     <div className='log-history-setting-sort-div' style={{ color: mode === MODETYPE.DARK ? "#fff" : "#444", }}>
@@ -134,22 +161,25 @@ const LogPage: FC<LogInterface> = ({ mode, status, updateAccesstoken, userId, us
                         <Dropdown mode={mode} onChange={dropDownHandler} options={['all', 'sent', 'processing', 'cancelled']} />
                     </div>
                     <div className='log-guild-search-div'>
-                        <SearchBar mode={mode} onChange={(v) => {setQuery(v)}} />
+                        <SearchBar mode={mode} placeholder="Search by title" onChange={(v) => {setQuery(v.trim())}} />
                     </div>
                 </div>
-                <div className='log-history-output' style={{ backgroundColor: mode === MODETYPE.DARK ? "#444" : "#EEEEEE", }}>
-                    <div className='log-history-output-history' style={{ backgroundColor: mode === MODETYPE.DARK ? "#444" : "#EEEEEE" }}>
-                        {/* {<ScrollComponent mode={mode} className='log-history-output-history-content' onIntersect={getData} hasMore={hasMoreLog} >
-                                {log.map((e: Log, i: number) => <Bar mode={mode} key={i} status={e.status} time={e.delivertime} title={e.title} mid={e.messageId} guildName={e.guildData?.name || 'deleted server'} icon={e.guildData?.avatar || 'deleted server'} fav={e.favourite} onStarClick={handleStartClick} uid={userId} did={discordId} />)}
-                            </ScrollComponent>} */}
-                        <div className='log-history-output-history-content'>
+                <div className='log-history-output'>
+                    <div className='log-history-output-history'>
+                        {log.length === 0 && loading && <div>
+                            Loading
+                        </div>}
+                        {log.length === 0 && !loading && <div>
+                            No Result Found
+                        </div>}
+                        <div className={`log-history-output-history-content scrollbar-${mode} ${mode}-top`}>
                             {log.map((e: Log, i: number) => {
                                 if (i + 1 === log.length) {
-                                    return <Bar parentRef={context} mode={mode} key={i} status={e.status} time={e.delivertime} title={e.title} mid={e.messageId} guildName={e.guildData?.name || 'deleted server'} icon={e.guildData?.avatar || 'deleted server'} fav={e.favourite} onStarClick={handleStartClick} uid={userId} did={discordId} />;
-                                    }else{
-                                        return <Bar  mode={mode} key={i} status={e.status} time={e.delivertime} title={e.title} mid={e.messageId} guildName={e.guildData?.name || 'deleted server'} icon={e.guildData?.avatar || 'deleted server'} fav={e.favourite} onStarClick={handleStartClick} uid={userId} did={discordId} />;
-                                    }
-                                })}
+                                    return <BoxBar accesstoken={accesstoken} refreshtoken={refreshtoken} userId={userId} status={status} updateAccesstoken={updateAccesstoken} parentRef={context} mode={mode} key={i} log={e} />;
+                                } else {
+                                    return <BoxBar accesstoken={accesstoken} refreshtoken={refreshtoken} userId={userId} status={status} updateAccesstoken={updateAccesstoken} mode={mode} key={i} log={e} />;
+                                }
+                            })}
                         </div>
                     </div>
                 </div>
@@ -158,4 +188,4 @@ const LogPage: FC<LogInterface> = ({ mode, status, updateAccesstoken, userId, us
     )
 }
 
-export default LogPage
+export default LogPage;

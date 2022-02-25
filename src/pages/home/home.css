@@ -1,12 +1,13 @@
 
+
 .home-full-div
 {
+    height: 100vh;
+    width: 100%;
+    overflow-y: scroll;
     position: relative;
     top: 0;
-}
-::-webkit-scrollbar
-{
-    display: none;
+    box-sizing: border-box;
 }
 .home-intro
 {
