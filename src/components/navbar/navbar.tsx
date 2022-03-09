@@ -8,20 +8,16 @@ import { NavLink, useNavigate } from "react-router-dom";
 import axios from 'axios';
 import { MODETYPE } from '../../hooks/useMode';
 import { STATUS } from '../../hooks/useAuthentication';
+import { useSelector } from 'react-redux';
+import type { RootState} from '../../redux/reducers/allReducer';
+import { useAppDispatch, useAppSelector } from '../../redux/hook/hook';
+import { change, modeType } from '../../redux/reducers/modeReducer';
 
-interface NavbarInterface{
-    mode:MODETYPE, 
-    updateMode:()=>void,
-    loading:boolean ,
-    status:`${STATUS.TEMPORARY}`|`${STATUS.NOT_AUTHORIZED}`|`${STATUS.PERMANENT}`,
-    avatar?:string,
-    userName?:string,
-    userTag?:string,
-    onLogout:()=>void,
-    discordId?:string,
-    userId?:string
-}
-const Navbar:FC<NavbarInterface>=({ mode, updateMode,loading ,status,avatar,userName,userTag,onLogout,discordId,userId }) =>{
+const Navbar=({  }) =>{
+    const mode:modeType =useAppSelector((state:RootState)=>state.mode).mode;
+    const { status, id, did, name, avatar,tag } =useAppSelector((state:RootState)=>state.user);
+    const dispatch=useAppDispatch();
+
     const [isWindowOpen, setIsWindowOpen] = useState(false);
     const [shrink, setShrink] = useState(false);
     const [loadingPercentage, setLoadingPercentage] = useState(0);
@@ -30,7 +26,7 @@ const Navbar:FC<NavbarInterface>=({ mode, updateMode,loading ,status,avatar,user
     const CancelToken = axios.CancelToken;
     const source = CancelToken.source();
     const handleLogout = () => {
-        onLogout && onLogout();
+
     }
     const handleResize = () => {
         if (window.innerWidth > 900) {
@@ -41,7 +37,8 @@ const Navbar:FC<NavbarInterface>=({ mode, updateMode,loading ,status,avatar,user
         }
     }
     const handleChange = () => {
-        updateMode && updateMode();
+        // updateMode && updateMode();
+        dispatch(change());
     }
     const handleScroll = () => {
         if (window.scrollY > 400) {
@@ -91,10 +88,10 @@ const Navbar:FC<NavbarInterface>=({ mode, updateMode,loading ,status,avatar,user
                     <NavLink className='navbar-links__link' to={'/'} style={({ isActive }) => isActive ? { color: mode === MODETYPE.DARK ? '#fff' : '#111' } : { color: mode === MODETYPE.DARK ? '#666' : '#555' }}>
                         Home
                     </NavLink>
-                    <NavLink className='navbar-links__link' to={`/dashboard/${userId}/${discordId}`} style={({ isActive }) => isActive ? { color: mode === MODETYPE.DARK ? '#fff' : '#111' } : { color: mode === MODETYPE.DARK ? '#666' : '#555' }}>
+                    <NavLink className='navbar-links__link' to={`/dashboard/${id}/${did}`} style={({ isActive }) => isActive ? { color: mode === MODETYPE.DARK ? '#fff' : '#111' } : { color: mode === MODETYPE.DARK ? '#666' : '#555' }}>
                         Dashboard
                     </NavLink>
-                    <NavLink className='navbar-links__link' to={`/log/${userId}/${discordId}`} style={({ isActive }) => isActive ? { color: mode === MODETYPE.DARK ? '#fff' : '#111' } : { color: mode === MODETYPE.DARK ? '#666' : '#555' }}>
+                    <NavLink className='navbar-links__link' to={`/log/${id}/${did}`} style={({ isActive }) => isActive ? { color: mode === MODETYPE.DARK ? '#fff' : '#111' } : { color: mode === MODETYPE.DARK ? '#666' : '#555' }}>
                         Log
                     </NavLink>
                     <NavLink className='navbar-links__link' to={'/learnmore'} style={({ isActive }) => isActive ? { color: mode === MODETYPE.DARK ? '#fff' : '#111' } : { color: mode === MODETYPE.DARK ? '#666' : '#555' }}>
@@ -102,18 +99,18 @@ const Navbar:FC<NavbarInterface>=({ mode, updateMode,loading ,status,avatar,user
                     </NavLink>
                 </div>
                 <div className='navbar-credentials' style={{ color: mode === MODETYPE.DARK ? '#fff' : '#222', backgroundColor: mode === MODETYPE.DARK ? '#222' : '#a8a8a8' }}>
-                    {!loading && status===STATUS.NOT_AUTHORIZED && <button className='navbar-login' onClick={handleLogin}>Log in</button>}
-                    { !loading && status !== STATUS.NOT_AUTHORIZED && <div className='navbar-loggedin-div'>
+                    {status==='NOT_AUTHORIZED' && <button className='navbar-login' onClick={handleLogin}>Log in</button>}
+                    {status !== 'NOT_AUTHORIZED' && <div className='navbar-loggedin-div'>
                         <div className='circle-image' >
                             <div className='circle-image__image'>
-                                <img src={avatar} onClick={handleFocus} alt='alternate'/>
-                                {status===STATUS.TEMPORARY && <FaDiscord className='temp-user-discord-logo' />}
+                                <img src={avatar||''} onClick={handleFocus} alt='alternate'/>
+                                {status==='TEMPORARY' && <FaDiscord className='temp-user-discord-logo' />}
                             </div>
-                            {!mobileSize && <span>{`${userName} #${userTag}`}</span>}
+                            {!mobileSize && <span>{`${name} #${tag}`}</span>}
                         </div>
                         {!mobileSize && <button className='navbar-logout' onClick={handleLogout}>Log Out</button>}
                         {isWindowOpen && <div className='navbar-small-window' style={{ backgroundColor: mode === MODETYPE.DARK ? '#000' : '#444' }}>
-                            <span >{`${userName} #${userTag}`}</span>
+                            <span >{`${name} #${tag}`}</span>
                             <button className='navbar-logout' onClick={handleLogout}>Log Out</button>
                         </div>}
                     </div>}

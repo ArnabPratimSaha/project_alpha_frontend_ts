@@ -35,17 +35,16 @@ const makeGuildIcon=(s:string)=>{
 }
 interface NewbarInterface {
     log:Log,
-    status: `${STATUS.TEMPORARY}` | `${STATUS.NOT_AUTHORIZED}` | `${STATUS.PERMANENT}`,
+    status: "WAITING" | "NOT_AUTHORIZED" | "TEMPORARY" | "PERMANENT",
     mode: `${MODETYPE.DARK}` | `${MODETYPE.LIGHT}`,
-    updateAccesstoken: (token: string) => void,
     onStarClick?:(mid:string,to:boolean)=>void,
     parentRef?:React.LegacyRef<HTMLDivElement>,
-    userId?: string,
-    accesstoken?: string,
-    refreshtoken?: string
+    userId: string|null,
+    accesstoken: string|null,
+    refreshtoken: string|null
 }
-const NewBar:FC<NewbarInterface>=({userId,accesstoken,refreshtoken,mode,log,onStarClick,parentRef,status,updateAccesstoken}) =>{
-    const { makeRequst, loading } = useRequest(status, updateAccesstoken);
+const NewBar:FC<NewbarInterface>=({userId,accesstoken,refreshtoken,mode,log,onStarClick,parentRef,status}) =>{
+    const { makeRequst, loading } = useRequest();
     const [messageStatus,setMessageStatus]=useState< "CANCELLED" | "PROCESSING" | "SENT">(log.status);
     const [star, setStar] = useState<boolean>(log.favourite)
     const [remainingTime, setRemainingTime] = useState<number>(new Date(log.delivertime).getTime()-new Date().getTime())
@@ -87,7 +86,7 @@ const NewBar:FC<NewbarInterface>=({userId,accesstoken,refreshtoken,mode,log,onSt
     const handleStarClick=async(change:boolean)=>{
         setStar(change)
         onStarClick && onStarClick(log.messageId,!star)
-        if (status === STATUS.NOT_AUTHORIZED) return;
+        if (status === 'NOT_AUTHORIZED') return;
         const header: AxiosRequestHeaders = {
             ['id']: userId?.toString() || '',
             ['accesstoken']: accesstoken?.toString() || '',
@@ -107,7 +106,7 @@ const NewBar:FC<NewbarInterface>=({userId,accesstoken,refreshtoken,mode,log,onSt
     }
     const handleOptionClick:((index: number) => void)=async(index:number)=>{
         if(index===1){
-            if (status === STATUS.NOT_AUTHORIZED) return;
+            if (status === 'NOT_AUTHORIZED') return;
             const header: AxiosRequestHeaders = {
                 ['id']: userId?.toString() || '',
                 ['accesstoken']: accesstoken?.toString() || '',

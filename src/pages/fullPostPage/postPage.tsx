@@ -17,19 +17,7 @@ enum messageType{
     dm='dm'
   }
   
-interface PostPageInterface{
-    status: `${STATUS.TEMPORARY}` | `${STATUS.NOT_AUTHORIZED}` | `${STATUS.PERMANENT}`,
-    mode: `${MODETYPE.DARK}` | `${MODETYPE.LIGHT}`,
-    updateAccesstoken: (token: string) => void,
-    userId?: string,
-    userName?: string,
-    userTag?: string,
-    avatar?: string,
-    discordId?: string
-    accesstoken?: string,
-    refreshtoken?: string
-}
-const PostPage:FC<PostPageInterface>=({mode, status, updateAccesstoken, userId, userName, userTag, avatar, discordId, accesstoken, refreshtoken})=> {
+const PostPage=()=> {
     // let { uid,sid, did,pid} = useParams();
     // const [details, setDetails] = useState()
     // const [remainingTime, setRemainingTime] = useState(new Date(Date.parse(time))-new Date())

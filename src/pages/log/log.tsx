@@ -13,6 +13,9 @@ import useRequest from "../../hooks/useRequest";
 import { Log } from "../../interface/schema";
 import BoxBar from '../../components/boxBar/boxBar';
 import './color.css';
+import { modeType } from "../../redux/reducers/modeReducer";
+import { useAppSelector } from "../../redux/hook/hook";
+import { RootState } from "../../redux/reducers/allReducer";
 
 
 var newDate = new Date();
@@ -23,34 +26,24 @@ type toggleIndex = 'all' | 'sent' | 'processing' | 'cancelled';
 newDate.setDate(newDate.getDate() + numberOfDaysToAdd);
 
 const limit = 15;//limit of requesting logs per request
-interface LogInterface {
-    status: `${STATUS.TEMPORARY}` | `${STATUS.NOT_AUTHORIZED}` | `${STATUS.PERMANENT}`,
-    mode: `${MODETYPE.DARK}` | `${MODETYPE.LIGHT}`,
-    updateAccesstoken: (token: string) => void,
-    userId?: string,
-    userName?: string,
-    userTag?: string,
-    avatar?: string,
-    discordId?: string
-    accesstoken?: string,
-    refreshtoken?: string
-}
 interface CustomLog extends Log{
     guildName:string,
     guildAvatar:string
 }
-const LogPage: FC<LogInterface> = ({ mode, status, updateAccesstoken, userId, userName, userTag, avatar, discordId, accesstoken, refreshtoken }) => {
-    let { uid, did } = useParams();
-    const { makeRequst, loading } = useRequest(status, updateAccesstoken);
+const LogPage = () => {
+    // let { uid, did } = useParams();
+    const mode:modeType=useAppSelector((state:RootState)=>state.mode.mode);
+    const { id,did,accesstoken,refreshtoken ,status}=useAppSelector(state=>state.user);
+    const { makeRequst, loading } = useRequest();
     const [activePage, setActivePage] = useState<Page>('ALL')//page thats active
     const [filter, setFilter] = useState<toggleIndex>('all')//current selected filter index
     const [pageIndex, setPageIndex] = useState(1)
 
-    const [hasMoreLog, setHasMoreLog] = useState<boolean>(true);
     const [log, setLog] = useState<Array<Log>>([]);
-
+    
     const [query, setQuery] = useState('');
     const observer = useRef<IntersectionObserver>();
+    const [hasMoreLog, setHasMoreLog] = useState<boolean>(true);
     const context = useCallback(node => {
         if (observer.current) observer.current.disconnect();
         observer.current = new IntersectionObserver((entries) => {
@@ -63,9 +56,9 @@ const LogPage: FC<LogInterface> = ({ mode, status, updateAccesstoken, userId, us
     useEffect(() => {
         const CancelToken = axios.CancelToken;
         const source = CancelToken.source();
-        if (status === STATUS.NOT_AUTHORIZED) return;
+        if (status === 'NOT_AUTHORIZED') return;
         const header: AxiosRequestHeaders = {
-            ['id']: userId?.toString() || '',
+            ['id']: id?.toString() || '',
             ['accesstoken']: accesstoken?.toString() || '',
             ['refreshtoken']: refreshtoken?.toString() || ''
         }
@@ -78,7 +71,7 @@ const LogPage: FC<LogInterface> = ({ mode, status, updateAccesstoken, userId, us
                     limit: 8,
                     page: pageIndex,
                     status: filter.toUpperCase(),
-                    did: discordId,
+                    did: did,
                     query: query,
                     fav:activePage==='FAVOURITE'?true:false
                 }
@@ -175,9 +168,9 @@ const LogPage: FC<LogInterface> = ({ mode, status, updateAccesstoken, userId, us
                         <div className={`log-history-output-history-content scrollbar-${mode} ${mode}-top`}>
                             {log.map((e: Log, i: number) => {
                                 if (i + 1 === log.length) {
-                                    return <BoxBar accesstoken={accesstoken} refreshtoken={refreshtoken} userId={userId} status={status} updateAccesstoken={updateAccesstoken} parentRef={context} mode={mode} key={i} log={e} />;
+                                    return <BoxBar accesstoken={accesstoken||''} refreshtoken={refreshtoken||''} userId={id} status={status}  parentRef={context} mode={mode} key={i} log={e} />;
                                 } else {
-                                    return <BoxBar accesstoken={accesstoken} refreshtoken={refreshtoken} userId={userId} status={status} updateAccesstoken={updateAccesstoken} mode={mode} key={i} log={e} />;
+                                    return <BoxBar accesstoken={accesstoken||''} refreshtoken={refreshtoken||''} userId={id} status={status}  mode={mode} key={i} log={e} />;
                                 }
                             })}
                         </div>

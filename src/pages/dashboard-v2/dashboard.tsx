@@ -14,10 +14,8 @@ import GuildButton from './components/guildButton/guildButton';
 import TouchableCard from "../../components/userCard/userCard";
 import axios,{AxiosRequestHeaders} from 'axios'
 import ChannelButton from "./components/channelButton/channelButton";
-import AdminIcon from "./components/adminIcon/adminIcon";
 import MemberButton from "./components/memberButton/memberButton";
 import Switch from "../../components/switch/switch";
-import Footer from "../../components/footer/footer";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Input from "./components/input/input";
@@ -27,6 +25,9 @@ import useRequest from "../../hooks/useRequest";
 import Guild, { Channel, Member, Role } from "../../interface/schema";
 import Message from "../../components/message-discord/message";
 import './color.css';
+import { modeType } from "../../redux/reducers/modeReducer";
+import { useAppSelector } from "../../redux/hook/hook";
+import { RootState } from "../../redux/reducers/allReducer";
 
 const type = {
   channel: 'CHANNEL',
@@ -45,26 +46,16 @@ const calcTimeString = (date: Date) => {
     `${date.getMinutes() < 10 ? `0${date.getMinutes()}` : `${date.getMinutes()}`}`
   )
 }
-interface DashboardInterface {
-  status: `${STATUS.TEMPORARY}` | `${STATUS.NOT_AUTHORIZED}` | `${STATUS.PERMANENT}`,
-  mode: `${MODETYPE.DARK}` | `${MODETYPE.LIGHT}`,
-  updateAccesstoken: (token: string) => void,
-  userId?: string,
-  userName?: string,
-  userTag?: string,
-  avatar?: string,
-  discordId?: string
-  accesstoken?: string,
-  refreshtoken?: string
-}
 
-const Dashboard: FC<DashboardInterface> = ({ mode, status, updateAccesstoken, userId, userName, userTag, avatar, discordId, accesstoken, refreshtoken }) => {
-  const {makeRequst,loading} =useRequest(status ,updateAccesstoken);
+const Dashboard = ({  }) => {
+  const mode:modeType=useAppSelector((state:RootState)=>state.mode.mode);
+  const {id,did, accesstoken,refreshtoken,status }=useAppSelector((state:RootState)=>state.user);
+  const {makeRequst,loading} =useRequest( );
   const timer = useRef<ReturnType<typeof setInterval> | undefined>(undefined)
   const [counter, setCounter] = useState(0)
   const today = useRef(new Date());
   const maxDate = useRef(newDate);
-  let { uid, did } = useParams();
+  // let { uid, did } = useParams();
   const [messageType, setMessageType] = useState<"left"|"right">("left");
   const [selectedTime, setSelectedTime] = useState<string>(calcTimeString(new Date()));
   const [rightDivVisible, setRightDivVisible] = useState(
@@ -143,15 +134,15 @@ const Dashboard: FC<DashboardInterface> = ({ mode, status, updateAccesstoken, us
   }, [activeGuild]);
   //guilds informations
   useEffect(() => {
-    if (status === 'notauthorized') return;
+    if (status === 'NOT_AUTHORIZED') return;
     const header: AxiosRequestHeaders = {
-      ['id']: userId?.toString() || '',
+      ['id']: id?.toString() || '',
       ['accesstoken']: accesstoken || '',
       ['refreshtoken']: refreshtoken || ''
     }
     const CancelToken = axios.CancelToken;
     const source = CancelToken.source();
-    makeRequst(`${process.env.REACT_APP_BACKENDAPI}discord/guilds?did=${discordId}`, { method: 'GET', headers: header, cancelTokenSource: source }).then(res => {
+    makeRequst(`${process.env.REACT_APP_BACKENDAPI}discord/guilds?did=${did}`, { method: 'GET', headers: header, cancelTokenSource: source }).then(res => {
       if (res && res.status === 200) {
         const data: Array<Guild> = res.data.guilds||[];
         setDiscordData(data);
@@ -167,17 +158,17 @@ const Dashboard: FC<DashboardInterface> = ({ mode, status, updateAccesstoken, us
   }, [])
   // useeffect for getting the discord channel and roles
   useEffect(() => {
-    if (status === 'notauthorized') return;
+    if (status === 'NOT_AUTHORIZED') return;
     if(!activeGuild)return;
     const header: AxiosRequestHeaders = {
-      ['id']: userId?.toString() || '',
+      ['id']: id?.toString() || '',
       ['accesstoken']: accesstoken?.toString() || '',
       ['refreshtoken']: refreshtoken?.toString() || ''
     }
     const CancelToken = axios.CancelToken;
     const source = CancelToken.source();
     makeRequst(`${process.env.REACT_APP_BACKENDAPI}discord/channel`, 
-      { method: 'POST', headers: header, cancelTokenSource: source, body: { did: discordId, gid: activeGuild.guildID } }
+      { method: 'POST', headers: header, cancelTokenSource: source, body: { did: did, gid: activeGuild.guildID } }
     ).then(res => {
       if (res && res.status === 200) {
         const data: Array<Channel> = res.data.channels||[];
@@ -186,7 +177,7 @@ const Dashboard: FC<DashboardInterface> = ({ mode, status, updateAccesstoken, us
       }
     });
     makeRequst(`${process.env.REACT_APP_BACKENDAPI}discord/role`,
-      { method: 'POST', headers: header, cancelTokenSource: source, body: { did: discordId, gid: activeGuild.guildID } }
+      { method: 'POST', headers: header, cancelTokenSource: source, body: { did: did, gid: activeGuild.guildID } }
     ).then(res => {
       if (res && res.status === 200) {
         const data: Array<Role> = res.data.roles||[];
@@ -230,18 +221,18 @@ const Dashboard: FC<DashboardInterface> = ({ mode, status, updateAccesstoken, us
   }, [searchedRole])
 //manging result of searched member
   useEffect(() => {
-    if (status === 'notauthorized') return;
+    if (status === 'NOT_AUTHORIZED') return;
     if(searchedMember.trim()==='')return;
     if(!activeGuild)return;
     const header: AxiosRequestHeaders = {
-      ['id']: userId?.toString() || '',
+      ['id']: id?.toString() || '',
       ['accesstoken']: accesstoken?.toString() || '',
       ['refreshtoken']: refreshtoken?.toString() || ''
     }
     const CancelToken = axios.CancelToken;
     const source = CancelToken.source();
     makeRequst(`${process.env.REACT_APP_BACKENDAPI}discord/member?`, { 
-      method: 'POST', headers: header, cancelTokenSource: source ,body:{did:discordId,gid:activeGuild.guildID ,query:searchedMember}
+      method: 'POST', headers: header, cancelTokenSource: source ,body:{did:did,gid:activeGuild.guildID ,query:searchedMember}
     }).then(res => {
       if (res && res.status === 200) {
         const data: Array<Member> = res.data.members||[];
@@ -371,9 +362,9 @@ const Dashboard: FC<DashboardInterface> = ({ mode, status, updateAccesstoken, us
     }
     if (activeGuild && (selectedChannels || selectedMembers || selectedRoles)) {
       const id = toast.loading('please wait...');
-      if (status === 'notauthorized') return;
+      if (status === 'NOT_AUTHORIZED') return;
       const header: AxiosRequestHeaders = {
-        ['id']: userId?.toString() || '',
+        ['id']: id?.toString() || '',
         ['accesstoken']: accesstoken?.toString() || '',
         ['refreshtoken']: refreshtoken?.toString() || ''
       }
@@ -390,7 +381,7 @@ const Dashboard: FC<DashboardInterface> = ({ mode, status, updateAccesstoken, us
           title:title,
           message:message,
           type:messageType==='left'?'channel':'dm',
-          did:discordId,
+          did:did,
           gid:activeGuild.guildID
         }
       }).then(res => {

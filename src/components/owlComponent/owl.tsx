@@ -1,9 +1,10 @@
 import React, { FC, useEffect } from 'react'
 import { MODETYPE } from '../../hooks/useMode';
+import { modeType } from '../../redux/reducers/modeReducer';
 
 import './owl.css'
 interface OwlInterface{
-    mode:MODETYPE,
+    mode:modeType,
     onChange:()=>void
 }
 const Owl:FC<OwlInterface>=({mode,onChange})=> {

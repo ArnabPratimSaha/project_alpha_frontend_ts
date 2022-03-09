@@ -13,7 +13,7 @@ interface ResponseInterface{
     data:Object|any,
     status: number
 }
-const useRequest=(status?:`${STATUS.NOT_AUTHORIZED}`|`${STATUS.TEMPORARY}`|`${STATUS.PERMANENT}`,updateToken?:(accesstoken:string)=>void) =>{
+const useRequest=() =>{
     const [loading, setLoading] = useState<boolean>(false);
 
     const makeRequst = async(url:string,option?: RequstInterface):Promise<ResponseInterface|undefined> => {
@@ -33,7 +33,7 @@ const useRequest=(status?:`${STATUS.NOT_AUTHORIZED}`|`${STATUS.TEMPORARY}`|`${ST
                 status:res.status,
             }
             if(res.data.accesstoken){
-                updateToken && updateToken(res.data.accesstoken);
+                // updateToken && updateToken(res.data.accesstoken);
             }
             return response;
         } catch (error) {
