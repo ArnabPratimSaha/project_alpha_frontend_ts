@@ -14,11 +14,8 @@ import GuildButton from './components/guildButton/guildButton';
 import TouchableCard from "../../components/userCard/userCard";
 import axios,{AxiosRequestHeaders} from 'axios'
 import ChannelButton from "./components/channelButton/channelButton";
-import AdminIcon from "./components/adminIcon/adminIcon";
 import MemberButton from "./components/memberButton/memberButton";
-import Cookies, { set } from "js-cookie";
 import Switch from "../../components/switch/switch";
-import Footer from "../../components/footer/footer";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Input from "./components/input/input";
@@ -27,6 +24,10 @@ import { STATUS } from "../../hooks/useAuthentication";
 import useRequest from "../../hooks/useRequest";
 import Guild, { Channel, Member, Role } from "../../interface/schema";
 import Message from "../../components/message-discord/message";
+import './color.css';
+import { modeType } from "../../redux/reducers/modeReducer";
+import { useAppSelector } from "../../redux/hook/hook";
+import { RootState } from "../../redux/reducers/allReducer";
 
 const type = {
   channel: 'CHANNEL',
@@ -45,163 +46,16 @@ const calcTimeString = (date: Date) => {
     `${date.getMinutes() < 10 ? `0${date.getMinutes()}` : `${date.getMinutes()}`}`
   )
 }
-const getContentHeight = (state:DrawerState, drawerNumber:number) => {
-  if (drawerNumber === 1) {
-    if (state.isSecondDrawerOpen && state.isThirdDrawerOpen)
-      return '28%';
-    if (state.isSecondDrawerOpen && !state.isThirdDrawerOpen)
-      return '28%';
-    if (!state.isSecondDrawerOpen && state.isThirdDrawerOpen)
-      return '28%';
-    else
-      return '85%';
-  }
-  else if (drawerNumber === 2) {
-    if (state.isFirstDrawerOpen && state.isThirdDrawerOpen)
-      return '28%';
-    if (!state.isFirstDrawerOpen && state.isThirdDrawerOpen)
-      return '28%';
-    else if (state.isFirstDrawerOpen && !state.isThirdDrawerOpen)
-      return '55%';
-    else
-      return '85%'
-  }
-  else {
-    if (state.isFirstDrawerOpen && state.isSecondDrawerOpen)
-      return '28%';
-    if (!state.isFirstDrawerOpen && !state.isSecondDrawerOpen)
-      return '85%';
-    else
-      return '61%'
-  }
 
-}
-const getValue = (term:string, div:number) => {
-  if (div === 2) {
-    switch (term) {
-      case 'equal':
-        return '33%'
-      case 'open-above':
-        return '5%'
-      case 'close':
-        return '33%';
-      case 'open-below':
-        return '33%';
-      case 'close-below':
-        return '90%'
-      case 'close-above':
-        return '5%'
-      default://open full
-        return '5%'
-    }
-  }
-  else {
-    switch (term) {
-      case 'equal':
-        return '66%'
-      case 'open-above':
-        return '38%'
-      case 'open-full':
-        return '10%'
-      default:
-        return '95%';
-    }
-  }
-}
-const calculateTop = (state:DrawerState, div:number) => {
-  if (div === 2) {
-    if (state.isSecondDrawerOpen) {
-      if (state.isFirstDrawerOpen && state.isThirdDrawerOpen)
-        return 'equal';
-      else if (!state.isFirstDrawerOpen && state.isThirdDrawerOpen)
-        return 'open-above'
-      else if (state.isFirstDrawerOpen && !state.isThirdDrawerOpen)
-        return 'open-below'
-      else
-        return 'open-full'
-    }
-    else {
-      if (state.isFirstDrawerOpen && !state.isThirdDrawerOpen)
-        return 'close-below';
-      if (!state.isFirstDrawerOpen && state.isThirdDrawerOpen)
-        return 'close-above'
-      else
-        return 'close'
-    }
-  }
-  else if (div === 3) {
-    if (state.isThirdDrawerOpen) {
-      if (state.isFirstDrawerOpen && state.isSecondDrawerOpen)
-        return 'equal';
-      else if (!state.isFirstDrawerOpen && state.isSecondDrawerOpen)
-        return 'open-above'
-      if (state.isFirstDrawerOpen && !state.isSecondDrawerOpen)
-        return 'open-above'
-      return 'open-full'
-    }
-    else {
-      if (!state.isFirstDrawerOpen && !state.isSecondDrawerOpen)
-        return 'open-full'
-      if (!state.isFirstDrawerOpen && state.isSecondDrawerOpen)
-        return 'close-full'
-      else
-        return 'close-full';
-    }
-  }
-  return 'close';
-}
-interface DrawerState {
-  isFirstDrawerOpen: boolean,
-  isSecondDrawerOpen: boolean,
-  isThirdDrawerOpen: boolean,
-}
-interface DrawerAction {
-  rightDrawer: number;
-}
-const rightReducer = (state:DrawerState, action:DrawerAction) => {
-  switch (action.rightDrawer) {
-    case 1:
-      return {
-        isFirstDrawerOpen: !state.isFirstDrawerOpen,
-        isSecondDrawerOpen: state.isSecondDrawerOpen,
-        isThirdDrawerOpen: state.isThirdDrawerOpen,
-      };
-    case 2:
-      return {
-        isFirstDrawerOpen: state.isFirstDrawerOpen,
-        isSecondDrawerOpen: !state.isSecondDrawerOpen,
-        isThirdDrawerOpen: state.isThirdDrawerOpen,
-      };
-    case 3:
-      return {
-        isFirstDrawerOpen: state.isFirstDrawerOpen,
-        isSecondDrawerOpen: state.isSecondDrawerOpen,
-        isThirdDrawerOpen: !state.isThirdDrawerOpen,
-      };
-    default:
-      return state;
-  }
-}
-interface DashboardInterface {
-  status: `${STATUS.TEMPORARY}` | `${STATUS.NOT_AUTHORIZED}` | `${STATUS.PERMANENT}`,
-  mode: `${MODETYPE.DARK}` | `${MODETYPE.LIGHT}`,
-  updateAccesstoken: (token: string) => void,
-  userId?: string,
-  userName?: string,
-  userTag?: string,
-  avatar?: string,
-  discordId?: string
-  accesstoken?: string,
-  refreshtoken?: string
-}
-
-const Dashboard: FC<DashboardInterface> = ({ mode, status, updateAccesstoken, userId, userName, userTag, avatar, discordId, accesstoken, refreshtoken }) => {
-  const {makeRequst,loading} =useRequest(status ,updateAccesstoken);
+const Dashboard = ({  }) => {
+  const mode:modeType=useAppSelector((state:RootState)=>state.mode.mode);
+  const {id,did, accesstoken,refreshtoken,status }=useAppSelector((state:RootState)=>state.user);
+  const {makeRequst,loading} =useRequest( );
   const timer = useRef<ReturnType<typeof setInterval> | undefined>(undefined)
   const [counter, setCounter] = useState(0)
   const today = useRef(new Date());
   const maxDate = useRef(newDate);
-  let { uid, did } = useParams();
+  // let { uid, did } = useParams();
   const [messageType, setMessageType] = useState<"left"|"right">("left");
   const [selectedTime, setSelectedTime] = useState<string>(calcTimeString(new Date()));
   const [rightDivVisible, setRightDivVisible] = useState(
@@ -217,13 +71,6 @@ const Dashboard: FC<DashboardInterface> = ({ mode, status, updateAccesstoken, us
   const [activeGuild, setActiveGuild] = useState<Guild|undefined>(undefined)
   const [focusOne, setFocusOne] = useState(false);
   const [focusTwo, setFocusTwo] = useState(false);
-  const [rightDrawerState, rightDrawerDispatch] = useReducer(rightReducer, {
-    isFirstDrawerOpen: true,
-    isSecondDrawerOpen: true,
-    isThirdDrawerOpen: true,
-  });
-  const [loadingPercentage, setLoadingPercentage] = useState(0);
-
   const [discordData, setDiscordData] = useState<Array<Guild>>([]);
 
   const [allChannels, setAllChannels] = useState<Array<Channel>>([]);
@@ -245,6 +92,9 @@ const Dashboard: FC<DashboardInterface> = ({ mode, status, updateAccesstoken, us
 
   const [checked, setChecked] = useState(true)//getting the dm
   const [isReady, setIsReady] = useState(false)//ready to be sent
+  const [channdelsOpen,setChannelsOpen]=useState(true);
+  const [rolesOpen,setRolesOpen]=useState(true);
+  const [membersOpen,setMembersOpen]=useState(true);
   const [rightDivType,setRightDivType]=useState<"Left"|"Right">('Left');
   useEffect(() => {
     timer.current = setInterval(() => {
@@ -284,15 +134,15 @@ const Dashboard: FC<DashboardInterface> = ({ mode, status, updateAccesstoken, us
   }, [activeGuild]);
   //guilds informations
   useEffect(() => {
-    if (status === 'notauthorized') return;
+    if (status === 'NOT_AUTHORIZED') return;
     const header: AxiosRequestHeaders = {
-      ['id']: userId?.toString() || '',
+      ['id']: id?.toString() || '',
       ['accesstoken']: accesstoken || '',
       ['refreshtoken']: refreshtoken || ''
     }
     const CancelToken = axios.CancelToken;
     const source = CancelToken.source();
-    makeRequst(`${process.env.REACT_APP_BACKENDAPI}discord/guilds?did=${discordId}`, { method: 'GET', headers: header, cancelTokenSource: source }).then(res => {
+    makeRequst(`${process.env.REACT_APP_BACKENDAPI}discord/guilds?did=${did}`, { method: 'GET', headers: header, cancelTokenSource: source }).then(res => {
       if (res && res.status === 200) {
         const data: Array<Guild> = res.data.guilds||[];
         setDiscordData(data);
@@ -308,17 +158,17 @@ const Dashboard: FC<DashboardInterface> = ({ mode, status, updateAccesstoken, us
   }, [])
   // useeffect for getting the discord channel and roles
   useEffect(() => {
-    if (status === 'notauthorized') return;
+    if (status === 'NOT_AUTHORIZED') return;
     if(!activeGuild)return;
     const header: AxiosRequestHeaders = {
-      ['id']: userId?.toString() || '',
+      ['id']: id?.toString() || '',
       ['accesstoken']: accesstoken?.toString() || '',
       ['refreshtoken']: refreshtoken?.toString() || ''
     }
     const CancelToken = axios.CancelToken;
     const source = CancelToken.source();
     makeRequst(`${process.env.REACT_APP_BACKENDAPI}discord/channel`, 
-      { method: 'POST', headers: header, cancelTokenSource: source, body: { did: discordId, gid: activeGuild.guildID } }
+      { method: 'POST', headers: header, cancelTokenSource: source, body: { did: did, gid: activeGuild.guildID } }
     ).then(res => {
       if (res && res.status === 200) {
         const data: Array<Channel> = res.data.channels||[];
@@ -327,7 +177,7 @@ const Dashboard: FC<DashboardInterface> = ({ mode, status, updateAccesstoken, us
       }
     });
     makeRequst(`${process.env.REACT_APP_BACKENDAPI}discord/role`,
-      { method: 'POST', headers: header, cancelTokenSource: source, body: { did: discordId, gid: activeGuild.guildID } }
+      { method: 'POST', headers: header, cancelTokenSource: source, body: { did: did, gid: activeGuild.guildID } }
     ).then(res => {
       if (res && res.status === 200) {
         const data: Array<Role> = res.data.roles||[];
@@ -371,18 +221,18 @@ const Dashboard: FC<DashboardInterface> = ({ mode, status, updateAccesstoken, us
   }, [searchedRole])
 //manging result of searched member
   useEffect(() => {
-    if (status === 'notauthorized') return;
+    if (status === 'NOT_AUTHORIZED') return;
     if(searchedMember.trim()==='')return;
     if(!activeGuild)return;
     const header: AxiosRequestHeaders = {
-      ['id']: userId?.toString() || '',
+      ['id']: id?.toString() || '',
       ['accesstoken']: accesstoken?.toString() || '',
       ['refreshtoken']: refreshtoken?.toString() || ''
     }
     const CancelToken = axios.CancelToken;
     const source = CancelToken.source();
     makeRequst(`${process.env.REACT_APP_BACKENDAPI}discord/member?`, { 
-      method: 'POST', headers: header, cancelTokenSource: source ,body:{did:discordId,gid:activeGuild.guildID ,query:searchedMember}
+      method: 'POST', headers: header, cancelTokenSource: source ,body:{did:did,gid:activeGuild.guildID ,query:searchedMember}
     }).then(res => {
       if (res && res.status === 200) {
         const data: Array<Member> = res.data.members||[];
@@ -486,18 +336,18 @@ const Dashboard: FC<DashboardInterface> = ({ mode, status, updateAccesstoken, us
         return;
       }
     }
-    if (title.trim().length <= 3) {
-      toast.warn('please add a title', {
-        position: "bottom-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
-      return;
-    }
+    // if (title.trim().length <= 3) {
+    //   toast.warn('please add a title', {
+    //     position: "bottom-right",
+    //     autoClose: 5000,
+    //     hideProgressBar: false,
+    //     closeOnClick: true,
+    //     pauseOnHover: true,
+    //     draggable: true,
+    //     progress: undefined,
+    //   });
+    //   return;
+    // }
     if (message.trim().length <= 3) {
       toast.error('message field cannot be left empty', {
         position: "bottom-right",
@@ -512,9 +362,9 @@ const Dashboard: FC<DashboardInterface> = ({ mode, status, updateAccesstoken, us
     }
     if (activeGuild && (selectedChannels || selectedMembers || selectedRoles)) {
       const id = toast.loading('please wait...');
-      if (status === 'notauthorized') return;
+      if (status === 'NOT_AUTHORIZED') return;
       const header: AxiosRequestHeaders = {
-        ['id']: userId?.toString() || '',
+        ['id']: id?.toString() || '',
         ['accesstoken']: accesstoken?.toString() || '',
         ['refreshtoken']: refreshtoken?.toString() || ''
       }
@@ -531,7 +381,7 @@ const Dashboard: FC<DashboardInterface> = ({ mode, status, updateAccesstoken, us
           title:title,
           message:message,
           type:messageType==='left'?'channel':'dm',
-          did:discordId,
+          did:did,
           gid:activeGuild.guildID
         }
       }).then(res => {
@@ -541,8 +391,6 @@ const Dashboard: FC<DashboardInterface> = ({ mode, status, updateAccesstoken, us
           //handle
         }
       }).catch(err => {
-        console.log(err);
-        
         toast.update(id, { render: "unknow error-try again", type: "error", isLoading: false, autoClose: 3000, draggable: true });
 
       })
@@ -551,11 +399,20 @@ const Dashboard: FC<DashboardInterface> = ({ mode, status, updateAccesstoken, us
   const handleTimeChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     setSelectedTime(e.target.value)
   }
-  useEffect(()=>{
-    // console.log(messageType);
-  },[messageType])
+  useEffect(() => {
+    if (selectedChannels.length === 0 && selectedRoles.length === 0 && selectedMembers.length === 0) return;
+    const element: HTMLElement | null = document.getElementById('dashboard-tag-01');
+    if (element) {
+      var isFound: boolean = false;
+      element.classList.forEach(c => { if (c === 'button-inactive') isFound = true; })
+      if (isFound) {
+        element.classList.add('blink');
+        setTimeout(()=>{element.classList.remove('blink')},200);
+      }
+    }
+  },[selectedChannels,selectedMembers,selectedRoles])
   return (
-    <div className="dashboard-full-div srollbar-1" style={{ backgroundColor: mode === MODETYPE.DARK ? "#444" : "#cacacaca", }}>
+    <div className={`dashboard-full-div srollbar-1 ${mode}-full-dashboard`}>
       <ToastContainer
         position="bottom-right"
         autoClose={5000}
@@ -611,12 +468,11 @@ const Dashboard: FC<DashboardInterface> = ({ mode, status, updateAccesstoken, us
           </div>
           <div className="dashboard-leftright-wrapper-div">
             <div
-              className="dashboard-left-div"
+              className={`dashboard-left-div ${mode}-left-dashboard`}
               style={{
-                backgroundColor: mode === MODETYPE.DARK ? "#666" : "#CDD0CB",
                 width: leftDivWidthFull ? "100%" : "60%",
               }}
-            >
+              >
               <div className='dashboard-left-div__message-div' style={{ zIndex: activeButton === '5' ? '1' : '0' }}>
                 <span className='dashboard-left-div-eachdiv__title'>message</span>
                 <Wrapper label='title' isFocused={focusOne} classFulldiv='dashboard-left-div__message-div__title'>
@@ -626,8 +482,8 @@ const Dashboard: FC<DashboardInterface> = ({ mode, status, updateAccesstoken, us
                   <textarea placeholder="Enter Your Message here" onFocus={() => { setFocusTwo(true) }} onChange={handleTextareaChange} onBlur={() => { setFocusTwo(false) }}></textarea>
                 </Wrapper>
               </div>
-              <div className='dashboard-left-div__guild-div' style={{ zIndex: activeButton === '1' ? '1' : '0' }}>
-                <div className='dashboard-left-div__channel-div__info' style={{ color: mode === MODETYPE.DARK ? '#fff' : 'black' }}>
+              <div className={`dashboard-left-div__guild-div`} style={{ zIndex: activeButton === '1' ? '1' : '0' }}>
+                <div className={`dashboard-left-div__channel-div__info`}>
                   <p>select <GiWifiRouter /> to send a message a channel and <IoIosMan /> to DM a perticular member from discord.Select <GiOfficeChair /> to tag a role [can only be used while sending a message to a channel]</p>
                 </div>
                 <div className='dashboard-left-div__guild-div__titile'>
@@ -699,7 +555,88 @@ const Dashboard: FC<DashboardInterface> = ({ mode, status, updateAccesstoken, us
                     />
                   </div>
                 </Wrapper>
-                <Wrapper label='submit' classFulldiv='dashboard-left-div__final-div-submit'>
+                
+              </div>
+            </div>
+            <div
+              className={`dashboard-right-div ${mode}-discord scrollbar-1`}
+              style={{
+                left: leftDivWidthFull ? isRightDivSliderButtonClicked ? '0%' : '100%' : '60%',
+              }}
+            >
+              <div className={`dashboard-right-div-button ${mode}-2`}>
+                <div className={`button__preview  ${rightDivType==='Left'?'button-active':'button-inactive' }`} onClick={()=>setRightDivType('Left')}>
+                  Preview & send
+                </div>
+                <div id="dashboard-tag-01" className={`button__tags  ${rightDivType==='Right'?'button-active':'button-inactive' }`} onClick={()=>setRightDivType('Right')}>
+                  Tags
+                </div>
+              </div>
+              <div className="dashboard-right-div_moveable" style={{zIndex:rightDivType==='Left'?'1':'2'}}>
+                <div className={`right-div-tags ${mode} ${mode}-discord scrollbar-1`}>
+                  {messageType === 'left' &&
+                    <><div className={`right-div__channels`}>
+                      <div className="right-div__channels_title right-div__overlay" onClick={()=>setChannelsOpen(s=>!s)}>
+                        <p>channels</p>
+                        <span className={`${mode}_inverse`}></span>
+                        <BiLeftArrow style={{transform:`rotateZ(${channdelsOpen?'-90deg':'0deg'})`}}/>
+                      </div>
+                      <div className="right-div__channels_container" style={{height:channdelsOpen?'fit-content':0}}>
+                        {selectedChannels.map(c=><TouchableCard 
+                          mode={mode} 
+                          key={c.channelId} 
+                          id={c.channelId} 
+                          title={c.channelName}
+                          onClick={(id)=>{
+                            setSelectedChannels(s=>s.filter(c=>c.channelId!==id))
+                        }} />)}
+                      </div>
+                    </div>
+                      <div className="right-div_roles">
+                        <div className="right-div__roles_title right-div__overlay" onClick={()=>setRolesOpen(s=>!s)}>
+                          <p>roles</p>
+                          <span className={`${mode}_inverse`}></span>
+                          <BiLeftArrow style={{transform:`rotateZ(${rolesOpen?'-90deg':'0deg'})`}}/>
+                        </div>
+                        <div className="right-div__roles_container" style={{height:rolesOpen?'fit-content':0}}>
+                          {selectedRoles.map(c=><TouchableCard 
+                            mode={mode}
+                            key={c.id} 
+                            id={c.id}
+                            style={{background:c.color}}
+                            title={c.name}
+                            onClick={(id)=>{
+                              setSelectedRoles(s=>s.filter(r=>r.id!==id))
+                          }} />)}
+                        </div>
+                      </div>
+                    </>
+                 }
+                  <div className="right-div_members">
+                    <div className="right-div__members_title right-div__overlay" onClick={()=>setMembersOpen(s=>!s)}>
+                      <p>members</p>
+                      <span className={`${mode}_inverse`}></span>
+                      <BiLeftArrow style={{transform:`rotateZ(${membersOpen?'-90deg':'0deg'})`}}/>
+                    </div>
+                    <div className="right-div__members_container" style={{height:membersOpen?'fit-content':0}}>
+                      {selectedMembers.map(c => <MemberButton
+                        mode={mode}
+                        key={c.id}
+                        id={c.id}
+                        nickName={c.nickName}
+                        userName={c.name}
+                        img={c.avatar}
+                        userTag={c.tag}
+                        type={'remove'}
+                        onClick={(id) => {
+                          setSelectedMembers(s => s.filter(r => r.id !== id))
+                        }} />)}
+                    </div>
+                  </div>
+                </div>
+                <div className={`right-div-preview ${mode} scrollbar-${mode}`} style={{zIndex:rightDivType==='Right'?'1':'2'}}>
+                  <Message title={title} mode={mode} message={message} members={selectedMembers} time={new Date(selectedTime)} roles={selectedRoles}/>
+                  <Wrapper label='confirm' classFulldiv='dashboard-left-div__final-div-submit'>
                   <div className='dashboard-left-div__final-div-submit-preview'>
                     <div style={{ backgroundColor: isReady ? '#00afff' : '#cacaca' }} className='custom-checkbox' onClick={() => {
                       if (activeGuild && (selectedChannels.length > 0 || selectedMembers.length > 0 || selectedRoles.length > 0)) {
@@ -718,92 +655,12 @@ const Dashboard: FC<DashboardInterface> = ({ mode, status, updateAccesstoken, us
                     <button onClick={handleMessageSend} style={{ background: isReady ? '#00cc00' : '#cacaca' }} className='submit-button'>Send</button>
                   </div>
                 </Wrapper>
-              </div>
-            </div>
-            <div
-              className={`dashboard-right-div ${mode}-discord scrollbar-1`}
-              style={{
-                left: leftDivWidthFull ? isRightDivSliderButtonClicked ? '0%' : '100%' : '60%',
-              }}
-            >
-              <div className={`dashboard-right-div-button ${mode}-2`}>
-                <div className={`button__tags  ${rightDivType==='Left'?'button-active':'button-inactive' }`} onClick={()=>setRightDivType('Left')}>
-                  Tags
-                </div>
-                <div className={`button__preview  ${rightDivType==='Right'?'button-active':'button-inactive' }`} onClick={()=>setRightDivType('Right')}>
-                  Preview
-                </div>
-              </div>
-              <div className="dashboard-right-div_moveable" style={{zIndex:rightDivType==='Left'?'2':'1'}}>
-                <div className={`right-div-tags ${mode} ${mode}-discord scrollbar-1`}>
-                  {messageType === 'left' &&
-                    <><div className={`right-div__channels`}>
-                      <div className="right-div__channels_title">
-                        <p>channels</p>
-                        <span className={`${mode}_inverse`}></span>
-                        <BiLeftArrow/>
-                      </div>
-                      <div className="right-div__channels_container">
-                        {selectedChannels.map(c=><TouchableCard 
-                          mode={mode} 
-                          key={c.channelId} 
-                          id={c.channelId} 
-                          title={c.channelName}
-                          onClick={(id)=>{
-                            setSelectedChannels(s=>s.filter(c=>c.channelId!==id))
-                        }} />)}
-                      </div>
-                    </div>
-                      <div className="right-div_roles">
-                        <div className="right-div__roles_title">
-                          <p>roles</p>
-                          <span className={`${mode}_inverse`}></span>
-                          <BiLeftArrow/>
-                        </div>
-                        <div className="right-div__roles_container">
-                          {selectedRoles.map(c=><TouchableCard 
-                            mode={mode}
-                            key={c.id} 
-                            id={c.id} 
-                            title={c.name}
-                            onClick={(id)=>{
-                              setSelectedRoles(s=>s.filter(r=>r.id!==id))
-                          }} />)}
-                        </div>
-                      </div>
-                    </>
-                 }
-                  <div className="right-div_members">
-                    <div className="right-div__members_title">
-                      <p>members</p>
-                      <span className={`${mode}_inverse`}></span>
-                      <BiLeftArrow />
-                    </div>
-                    <div className="right-div__members_container">
-                      {selectedMembers.map(c => <MemberButton
-                        mode={mode}
-                        key={c.id}
-                        id={c.id}
-                        nickName={c.nickName}
-                        userName={c.name}
-                        img={c.avatar}
-                        userTag={c.tag}
-                        type={'remove'}
-                        onClick={(id) => {
-                          setSelectedMembers(s => s.filter(r => r.id !== id))
-                        }} />)}
-                    </div>
-                  </div>
-                </div>
-                <div className={`right-div-preview ${mode}`} style={{zIndex:rightDivType==='Right'?'2':'1'}}>
-                  <Message mode={mode} message={message} members={selectedMembers} />
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <Footer mode={mode} />
     </div>
   );
 }

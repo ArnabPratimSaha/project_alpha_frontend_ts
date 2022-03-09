@@ -15,7 +15,7 @@ interface UserCardInterface{
 }
 const UserCard:FC<UserCardInterface>=({style,logoStyle,classNameFullDiv,classNameIcon,img,id,mode,onClick,title})=> {
     return (
-        <div className={`usercard-fulldiv ${mode}-fulldiv ${classNameFullDiv} `}>
+        <div className={`usercard-fulldiv ${classNameFullDiv} `} style={{...style}}>
             {img &&<img src={img} alt='alt'></img>}
             <p style={style}>{title} <BsXCircleFill onClick={()=>{onClick && onClick(id)}} className={`usercard-closeDiv ${classNameIcon}`} style={logoStyle} /></p>
         </div>

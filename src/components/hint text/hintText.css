@@ -1,0 +1,20 @@
+.hinttext-fulldiv,.hinttext-children
+{
+    position: relative;
+    color: inherit;
+    background: inherit;
+}
+.hintText-hint
+{
+    position: absolute;
+    color: inherit;
+    background: inherit;
+    text-align: center;
+    top: 0;
+    left: 50%;
+    width: auto;
+    text-transform: capitalize;
+    white-space: nowrap;
+    font-size: .6rem;
+    transform: translate(-50%,-100%);
+}

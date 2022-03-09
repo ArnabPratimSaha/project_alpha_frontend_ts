@@ -1,12 +1,13 @@
-import react,{FC, useEffect, useState} from "react";
+import { useEffect, useState} from "react";
 import "./error.css";
 import {useParams} from 'react-router-dom';
 import { MODETYPE } from "../../hooks/useMode";
-interface ErrorInterface{
-    mode:MODETYPE
-}
-const Error:FC<ErrorInterface>=({mode})=>
+import { modeType } from "../../redux/reducers/modeReducer";
+import { useAppSelector } from "../../redux/hook/hook";
+import { RootState } from "../../redux/reducers/allReducer";
+const Error=()=>
 {
+    const mode:modeType=useAppSelector((state:RootState)=>state.mode.mode);
     const [code, setCode] = useState(useParams().code)
     const [message, setMessage] = useState('Unknown Error')
     const [title, setTitle] = useState('An Error Has Occurred');
@@ -28,13 +29,13 @@ const Error:FC<ErrorInterface>=({mode})=>
             setMessage('Unknow Error')
     },[])
     return(
-        <div className='error-full-div' style={{ backgroundColor: mode === MODETYPE.DARK ? "#444" : "#cacacaca"}}>
+        <div className='error-full-div' style={{ backgroundColor: mode === 'dark' ? "#444" : "#cacacaca"}}>
             <div className="error-div" >
                 <i className="far fa-frown fa-10x" ></i>
-                <h1 style={{ color: mode === MODETYPE.DARK ? "#cacaca" : "#000", }}>{code}</h1>
-                <h2 style={{ color: mode === MODETYPE.DARK ? "#ffffff" : "#222", }}>{title}</h2>
-                <p style={{ color: mode === MODETYPE.DARK ? "#cacaca" : "#000", }}>{message}</p>
-                <h6 style={{ color: mode === MODETYPE.DARK ? "#cacaca" : "#000", }}>Go to</h6><a href="/home"  style={{ color: mode === MODETYPE.DARK ? "#fff" : "#333", }}> home </a><h6  style={{ color: mode === MODETYPE.DARK ? "#cacaca" : "#000", }}>page </h6>
+                <h1 style={{ color: mode === 'dark' ? "#cacaca" : "#000", }}>{code}</h1>
+                <h2 style={{ color: mode === 'dark' ? "#ffffff" : "#222", }}>{title}</h2>
+                <p style={{ color: mode === 'dark'? "#cacaca" : "#000", }}>{message}</p>
+                <h6 style={{ color: mode === 'dark'? "#cacaca" : "#000", }}>Go to</h6><a href="/home"  style={{ color: mode === 'dark' ? "#fff" : "#333", }}> home </a><h6  style={{ color: mode === 'dark' ? "#cacaca" : "#000", }}>page </h6>
             </div>
 
         </div>

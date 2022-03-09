@@ -1,0 +1,32 @@
+.dark-full-dashboard {
+  background-color: #2e323a;
+  color: #fff;
+}
+.light-full-dashboard {
+  background-color: #d4d4d4;
+  color: #222;
+}
+.dark-left-dashboard {
+  background-color: #454649;
+  color: #fff;
+}
+.light-left-dashboard {
+  background-color: #eeeeee;
+  color: #222;
+}
+.button-active {
+  background-color: #5865f2;
+  color: #fff;
+}
+.button-active-inverse {
+  background-color: #fff;
+  color: #5865f2;
+}
+.button-inactive {
+  background-color: transparent;
+  color: #222;
+}
+.blink{
+  background-color: #e6e6e6;
+  transition: background-color ease-in-out 100ms;
+}

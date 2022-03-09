@@ -13,7 +13,7 @@ interface CustombuttonInterface{
 const  ChannelButton:FC<CustombuttonInterface>=({mode,style,id,onClick,name})=> {
     const [hovered,setHovered]=useState(false);
     return (
-        <div className='channelbutton-fulldiv' style={{background:mode===MODETYPE.DARK?'#444':'#666',color:'#fff',...style}}>
+        <div className='channelbutton-fulldiv' style={{...style}}>
             <h2>{name}</h2>
             <AiFillPlusSquare onClick={()=>{onClick && onClick(id)}} onMouseEnter={()=>{setHovered(true)}} onMouseLeave={()=>{setHovered(false)}} style={{color:hovered?'#cacaca':'white',cursor:'pointer',...style}}/>
         </div>

@@ -1,14 +1,14 @@
-import React, { FC, useEffect,useRef,useState } from 'react'
+import React, {  useEffect,useRef,useState } from 'react'
 import {  useParams } from "react-router-dom";
 import './authentication.css';
 import axios,{AxiosRequestHeaders} from 'axios';
 import Cookie from 'js-cookie';
-import { MODETYPE } from '../../hooks/useMode';
-interface Authenticationinterface {
-    mode:MODETYPE
-}
+import { useAppSelector } from '../../redux/hook/hook';
+import  type{ RootState} from '../../redux/reducers/allReducer';
+import type { modeType} from '../../redux/reducers/modeReducer';
 
-const Authentication:FC<Authenticationinterface>=({mode})=> {
+const Authentication=()=> {
+    const mode:modeType = useAppSelector((state: RootState) => state.mode.mode);
     const {id,accesstoken,refreshtoken}=useParams();
     const [isVerifying, setIsVerifying] = useState(true)
     const [verified, setVerified] = useState(false)
@@ -66,7 +66,7 @@ const Authentication:FC<Authenticationinterface>=({mode})=> {
     }, [])
     return (
         <>
-            <div className='auth-fulldiv' style={{background:mode===MODETYPE.DARK?'#333':'#f3f3f3'}}>
+            <div className='auth-fulldiv' style={{background:mode==='dark'?'#333':'#f3f3f3'}}>
                 <div className='auth-center-div'>
                     {verified && <img src={imageSource} alt='alt'></img>}
                     {verified && <h2>{`Welcome ${userName}#${userTag}`}</h2>}

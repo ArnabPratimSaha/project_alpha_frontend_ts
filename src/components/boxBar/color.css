@@ -1,0 +1,23 @@
+.dark-boxcard{
+    background-color: #252525;
+    color: #fff;
+}
+.dark-boxcard:hover
+{
+    filter: drop-shadow(2px 2px 3px #50535a);
+}
+.light-boxcard{
+    background-color: #cccccc;
+    color: #111;
+}
+.light-boxcard:hover
+{
+    filter: drop-shadow(2px 2px 3px #a3a3a3);
+    box-shadow: #ffffff 5px 5px 6px 1px inset, #ffffff -5px -5px 6px 1px inset;
+}
+.dark-status-div{
+    filter: drop-shadow(2p 2px 3px #222);
+}
+.light-status-div{
+    filter: drop-shadow(2p 2px 3px #464646);
+}

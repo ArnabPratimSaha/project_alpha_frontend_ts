@@ -31,13 +31,14 @@ interface NewbarInterface{
     icon:string,
     mode:`${MODETYPE.DARK}`|`${MODETYPE.LIGHT}`,
     title:string,
+    message:string,
     uid?:string,
     did?:string,
     mid:string,
     onStarClick?:(mid:string,to:boolean)=>void,
     parentRef?:React.LegacyRef<HTMLDivElement>
 }
-const NewBar:FC<NewbarInterface>=({time,status,fav,guildName,mode,title,icon,uid,did,mid,onStarClick,parentRef}) =>{
+const NewBar:FC<NewbarInterface>=({time,status,fav,guildName,mode,title,message,icon,uid,did,mid,onStarClick,parentRef}) =>{
     const [size, setSize] = useState(false)
     const [star, setStar] = useState<boolean>(false)
     const [remainingTime, setRemainingTime] = useState<number>(new Date(time).getTime()-new Date().getTime())
