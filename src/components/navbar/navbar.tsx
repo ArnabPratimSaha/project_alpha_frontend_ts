@@ -119,14 +119,14 @@ const Navbar=({  }) =>{
                     </div>
                 </div>
             </div>
-            <div className='navlinks-mobile' style={{ height: shrink ? '0' : '2rem', backgroundColor: mode === MODETYPE.DARK ? '#555' : '#ffff', color: mode === MODETYPE.DARK ? '#fff' : '#222', }}>
+            <div className={`navlinks-mobile ${mode}-3`} style={{ height: shrink ? '0' : '2rem'}}>
                 <NavLink className='navbar-links__link' to={'/'} style={({ isActive }) => isActive ? { color: mode === MODETYPE.DARK ? '#fff' : '#111' } : { color: mode === MODETYPE.DARK ? '#666' : '#555' }}>
                     Home
                 </NavLink>
-                <NavLink className='navbar-links__link' to={`/dashboard/${Cookies.get('temp_id') || Cookies.get('id')}/${Cookies.get('temp_discordId') || Cookies.get('discordId')}`} style={({ isActive }) => isActive ? { color: mode === MODETYPE.DARK ? '#fff' : '#111' } : { color: mode === MODETYPE.DARK ? '#666' : '#555' }}>
+                <NavLink className='navbar-links__link' to={`/dashboard/${id}/${did}`} style={({ isActive }) => isActive ? { color: mode === MODETYPE.DARK ? '#fff' : '#111' } : { color: mode === MODETYPE.DARK ? '#666' : '#555' }}>
                     Dashboard
                 </NavLink>
-                <NavLink className='navbar-links__link' to={`/log/${Cookies.get('temp_id') || Cookies.get('id')}/${Cookies.get('temp_discordId') || Cookies.get('discordId')}`} style={({ isActive }) => isActive ? { color: mode === MODETYPE.DARK ? '#fff' : '#111' } : { color: mode === MODETYPE.DARK ? '#666' : '#555' }}>
+                <NavLink className='navbar-links__link' to={`/log/${id}/${did}`} style={({ isActive }) => isActive ? { color: mode === MODETYPE.DARK ? '#fff' : '#111' } : { color: mode === MODETYPE.DARK ? '#666' : '#555' }}>
                     Log
                 </NavLink>
                 <NavLink className='navbar-links__link' to={'/learnmore'} style={({ isActive }) => isActive ? { color: mode === MODETYPE.DARK ? '#fff' : '#111' } : { color: mode === MODETYPE.DARK ? '#666' : '#555' }}>

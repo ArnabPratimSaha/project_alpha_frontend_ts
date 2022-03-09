@@ -181,7 +181,6 @@
 .navlinks-mobile
 {
     width: 100%;
-    background-color: aqua;
     z-index: -999;
     display: none;
     height: 2rem;
