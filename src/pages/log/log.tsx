@@ -158,22 +158,19 @@ const LogPage = () => {
                     </div>
                 </div>
                 <div className='log-history-output'>
-                    <div className='log-history-output-history'>
-                        {log.length === 0 && loading && <div>
-                            Loading
-                        </div>}
-                        {log.length === 0 && !loading && <div>
-                            No Result Found
-                        </div>}
-                        <div className={`log-history-output-history-content scrollbar-${mode} ${mode}-top`}>
+                    <div className={`log-history-output-history scrollbar-${mode}`}>
+                        <div className={`log-history-output-history-content ${mode}-top`}>
                             {log.map((e: Log, i: number) => {
                                 if (i + 1 === log.length) {
                                     return <BoxBar accesstoken={accesstoken||''} refreshtoken={refreshtoken||''} userId={id} status={status}  parentRef={context} mode={mode} key={i} log={e} />;
                                 } else {
-                                    return <BoxBar accesstoken={accesstoken||''} refreshtoken={refreshtoken||''} userId={id} status={status}  mode={mode} key={i} log={e} />;
+                                    return <BoxBar accesstoken={accesstoken || ''} refreshtoken={refreshtoken || ''} userId={id} status={status} mode={mode} key={i} log={e} />;
                                 }
                             })}
                         </div>
+                        {<div className="log-history-output-extra">
+                            {loading?'Loading':log.length===0 ?"No Data found":'You are all caught up'}
+                        </div>}
                     </div>
                 </div>
             </div>

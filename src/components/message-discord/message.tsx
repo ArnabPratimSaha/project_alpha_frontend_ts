@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from 'react';
+import  {memo, FC, useEffect } from 'react';
 import { MODETYPE } from '../../hooks/useMode';
 import './message.css';
 import no_image from './images/no-image.png'
@@ -53,4 +53,4 @@ const Message:FC<MessageInterface>=({mode,members,author,message,time,roles,titl
     )
 }
 
-export default Message
+export default memo(Message);

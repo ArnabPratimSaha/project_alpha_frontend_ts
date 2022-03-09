@@ -4,6 +4,7 @@
     border-radius: 2px;
     position: relative;
     display: flex;
+    box-sizing: border-box;
 }
 :root
 {

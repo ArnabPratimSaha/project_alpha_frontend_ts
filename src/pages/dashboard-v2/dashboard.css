@@ -322,6 +322,7 @@
     padding: 10px;
     box-sizing: border-box;
     overflow-y: scroll;
+    /* overflow-x: hidden; */
 }
 .right-div-tags{
     z-index: 2;

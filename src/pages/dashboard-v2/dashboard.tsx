@@ -476,7 +476,7 @@ const Dashboard = ({  }) => {
               <div className='dashboard-left-div__message-div' style={{ zIndex: activeButton === '5' ? '1' : '0' }}>
                 <span className='dashboard-left-div-eachdiv__title'>message</span>
                 <Wrapper label='title' isFocused={focusOne} classFulldiv='dashboard-left-div__message-div__title'>
-                  <input placeholder="a" type={'text'}  onFocus={() => { setFocusOne(true) }} onBlur={() => { setFocusOne(false) }} value={title} onChange={(e) => { setTitle(e.target.value) }}/>
+                  <input placeholder="a" type={'text'}  onFocus={() => { setFocusOne(true) }} onBlur={() => { setFocusOne(false) }} value={title} onChange={(e) => { setTitle(s=>e.target.value) }}/>
                 </Wrapper>
                 <Wrapper label='message' isFocused={focusTwo} classFulldiv='dashboard-left-div__message-div__message'>
                   <textarea placeholder="Enter Your Message here" onFocus={() => { setFocusTwo(true) }} onChange={handleTextareaChange} onBlur={() => { setFocusTwo(false) }}></textarea>
@@ -664,4 +664,4 @@ const Dashboard = ({  }) => {
     </div>
   );
 }
-export default Dashboard;
+export default React.memo(Dashboard);
