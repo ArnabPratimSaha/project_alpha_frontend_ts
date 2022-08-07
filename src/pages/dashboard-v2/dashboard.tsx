@@ -133,7 +133,7 @@ const Dashboard = ({  }) => {
     setSelectedChannels([])
   }, [activeGuild]);
   //guilds informations
-  useEffect(() => {
+ useEffect(() => {
     if (status === 'NOT_AUTHORIZED') return;
     const header: AxiosRequestHeaders = {
       ['id']: id?.toString() || '',
@@ -261,15 +261,15 @@ const Dashboard = ({  }) => {
     });
     setSelectedRoles([]);
     setSelectedChannels([]);
-    // toast.info(`Switching to ${messageType==='left'?'Channel':'DM'} type`, {
-    //   position: "bottom-right",
-    //   autoClose: 2000,
-    //   hideProgressBar: false,
-    //   closeOnClick: true,
-    //   pauseOnHover: true,
-    //   draggable: true,
-    //   progress: undefined,
-    // });
+    toast.info(`Switching to ${messageType==='left'?'Channel':'DM'} type`, {
+      position: "bottom-right",
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
   }
   const handleToggleRightDiv = () => {
     changeIsRightDivSliderButtonClicked(!isRightDivSliderButtonClicked)
@@ -361,13 +361,14 @@ const Dashboard = ({  }) => {
       return;
     }
     if (activeGuild && (selectedChannels || selectedMembers || selectedRoles)) {
-      const id = toast.loading('please wait...');
+      const toastId = toast.loading('please wait...');
       if (status === 'NOT_AUTHORIZED') return;
       const header: AxiosRequestHeaders = {
         ['id']: id?.toString() || '',
         ['accesstoken']: accesstoken?.toString() || '',
         ['refreshtoken']: refreshtoken?.toString() || ''
       }
+      
       const CancelToken = axios.CancelToken;
       const source = CancelToken.source();
       makeRequst(`${process.env.REACT_APP_BACKENDAPI}message/`, {
@@ -386,12 +387,12 @@ const Dashboard = ({  }) => {
         }
       }).then(res => {
         if (res && res.status === 200) {
-          toast.update(id, { render: "message timmed", type: "success", isLoading: false, autoClose: 3000, draggable: true });
+          toast.update(toastId, { render: "message timmed", type: "success", isLoading: false, autoClose: 3000, draggable: true });
           
           //handle
         }
       }).catch(err => {
-        toast.update(id, { render: "unknow error-try again", type: "error", isLoading: false, autoClose: 3000, draggable: true });
+        toast.update(toastId, { render: "unknow error-try again", type: "error", isLoading: false, autoClose: 3000, draggable: true });
 
       })
     }
