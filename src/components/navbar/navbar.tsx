@@ -12,6 +12,7 @@ import { useSelector } from 'react-redux';
 import type { RootState} from '../../redux/reducers/allReducer';
 import { useAppDispatch, useAppSelector } from '../../redux/hook/hook';
 import { change, modeType } from '../../redux/reducers/modeReducer';
+import {userActions} from '../../redux/reducers/userReducer'; 
 
 const Navbar=({  }) =>{
     const mode:modeType =useAppSelector((state:RootState)=>state.mode).mode;
@@ -26,7 +27,7 @@ const Navbar=({  }) =>{
     const CancelToken = axios.CancelToken;
     const source = CancelToken.source();
     const handleLogout = () => {
-
+        dispatch(userActions.logout());
     }
     const handleResize = () => {
         if (window.innerWidth > 900) {

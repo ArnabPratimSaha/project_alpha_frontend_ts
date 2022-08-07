@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction,createAction } from '@reduxjs/toolkit';
+import Cookies from 'js-cookie';
 import type { RootState } from './allReducer';
 interface UserInterface{
     status:"WAITING"|"NOT_AUTHORIZED"|"TEMPORARY"|"PERMANENT",
@@ -36,6 +37,9 @@ export const userSlice=createSlice({
             state.avatar=data.payload.avatar;
         },
         logout:(state)=>{
+            Cookies.remove('accesstoken')
+            Cookies.remove('refreshtoken')
+            Cookies.remove('id')
             state.status='NOT_AUTHORIZED'
         },
         updateAccessToken:(state,accesstoken:PayloadAction<string>)=>{
