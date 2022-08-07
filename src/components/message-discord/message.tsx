@@ -18,9 +18,6 @@ const getTime=(date:Date):string=>{
     return ` ${date.toDateString()} ${date.getHours()}:${date.getMinutes()<10?`0${date.getMinutes()}`:date.getMinutes()}`
 }
 const Message:FC<MessageInterface>=({mode,members,author,message,time,roles,title})=> {
-    useEffect(()=>{
-        console.log(message);
-    },[message])
     return (
         <div className={`message-fulldiv ${mode}-discord ${author && `message-label`}` }>
             <div className="message-left-div">
