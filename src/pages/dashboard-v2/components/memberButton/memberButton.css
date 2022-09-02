@@ -6,13 +6,36 @@
     display: flex;
     justify-content: space-evenly;
     align-items: center;
-    background-color: #cacaca;
-    color: #333;
     margin: 5px;
     border: 1px solid transparent;
     border-radius: 5px;
     cursor: default;
     height: 2rem;
+}
+.memberbutton-imagediv{
+    position: relative;
+}
+.memberbutton-statusdiv{
+    position: absolute;
+    bottom: 5px;
+    right: 0;
+    
+    height: 10px;
+    width: 10px;
+    border-radius: 100%;
+    background-color: #fff;
+}
+.status-offline,.status-invisible{
+    background-color: #b1b1b1;
+}
+.status-online{
+    background-color: #00ff00;
+}
+.status-idle{
+    background-color: yellow;
+}
+.status-dnd{
+    background-color: red;
 }
 .memberbutton-fulldiv img
 {
@@ -50,8 +73,6 @@
     justify-content: center;
     align-items: center;
     border-radius: 100%;
-    background-color: #555;
-    color: #fff;
     text-transform: uppercase;
 
 }

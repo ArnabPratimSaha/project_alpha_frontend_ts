@@ -1,3 +1,4 @@
+
 interface Guild {
     guildName:string,
     guildID:string,
@@ -21,7 +22,8 @@ interface Member {
     tag:string,
     isAdmin: boolean,
     roles: Array<Role>,
-    id: string
+    id: string,
+    status:'online' | 'idle' | 'dnd'| 'offline'|'invisible'
 }
 interface Log {
     messageId: string,

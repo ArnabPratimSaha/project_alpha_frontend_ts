@@ -22,14 +22,16 @@ interface MemberbuttonInterface{
     classNameIcon?:string,
     classNameInfoDiv?:string,
     classNameChildrenDiv?:string,
-    style?:React.CSSProperties
+    style?:React.CSSProperties,
+    status:'online' | 'idle' | 'dnd'| 'offline'|'invisible'
 }
-const MemberButton:FC<MemberbuttonInterface>=({nickName,img,userName,mode,userTag,children,type,onClick,id,classNameIcon,classNameFullDiv,classNameInfoDiv,classNameChildrenDiv,style})=>{
-    name=(nickName||userName).toString().split(/\s+/g);
+const MemberButton:FC<MemberbuttonInterface>=({nickName,img,userName,status,mode,userTag,children,type,onClick,id,classNameIcon,classNameFullDiv,classNameInfoDiv,classNameChildrenDiv,style})=>{
     return (
-        <div className={`memberbutton-fulldiv ${classNameFullDiv}`} style={{background:mode===MODETYPE.DARK?'#444':'#fff',color:mode===MODETYPE.DARK?'#fff':'#222',...style}}>
-            {img && <img src={img} alt='alt'></img>}
-            {!img && <div className='memberbutton-custom-image-div'>{name[0].slice(0,1)}{name.length>1&&name[1].slice(0,1)}</div>}
+        <div className={`memberbutton-fulldiv ${classNameFullDiv} ${mode}-3`} style={{...style}}>
+            <div className='memberbutton-imagediv'>
+                {img && <img src={img} alt='alt'></img>}
+                <div className={`memberbutton-statusdiv status-${status}`}></div>
+            </div>
             <div className={`memberbutton-infoDiv ${classNameInfoDiv}`}>
                {nickName && <h6>{nickName}</h6>}
                {!nickName && userName && <h6>{userName}#{userTag}</h6>}

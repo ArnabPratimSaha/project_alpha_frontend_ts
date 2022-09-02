@@ -28,21 +28,6 @@ const ProtectedRoutes= () => {
   if (status !== 'NOT_AUTHORIZED') return <Outlet />;
   return <>{window.location.href = `${process.env.REACT_APP_BACKENDAPI}auth/discord`}</>;
 };
-const role: Role = {
-  name: 'dadad',
-  id: 'dawdad',
-  isAdmin: true,
-  color: 'dawdawd'
-}
-const me: Member = {
-  name: "arnab",
-  nickName: 'alapon',
-  id: 'adadadadawda',
-  isAdmin: true,
-  avatar: 'dad',
-  tag: 'dada',
-  roles: [role]
-}
 const App = () => {
   useAuthentication();
   return (
