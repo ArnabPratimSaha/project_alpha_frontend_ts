@@ -96,6 +96,10 @@ const Dashboard = ({  }) => {
   const [rolesOpen,setRolesOpen]=useState(true);
   const [membersOpen,setMembersOpen]=useState(true);
   const [rightDivType,setRightDivType]=useState<"Left"|"Right">('Left');
+  useEffect(()=>{
+    console.log(members);
+    
+  },[members])
   useEffect(() => {
     timer.current = setInterval(() => {
       setCounter((state) => state + 1)
@@ -532,7 +536,7 @@ const Dashboard = ({  }) => {
                   <Wrapper label='members' classFulldiv='dashboard-left-div__channel-div__content-result'>
                     <div className='dashboard-left-div__guild-div__result_wrapper'>
                       {members && members.map((c) => {
-                        return <MemberButton mode={mode} style={{ backgroundColor: '#545454', color: '#fff' }} type='add' nickName={c.nickName} img={c.avatar} userName={c.name} userTag={c.tag} id={c.id} key={c.id} onClick={handleMemberButtonClick} />
+                        return <MemberButton status={c.status} mode={mode}  type='add' nickName={c.nickName} img={c.avatar} userName={c.name} userTag={c.tag} id={c.id} key={c.id} onClick={handleMemberButtonClick} />
                       })}
                     </div>
                   </Wrapper>
@@ -621,6 +625,7 @@ const Dashboard = ({  }) => {
                     </div>
                     <div className="right-div__members_container" style={{height:membersOpen?'fit-content':0}}>
                       {selectedMembers.map(c => <MemberButton
+                        status={c.status}
                         mode={mode}
                         key={c.id}
                         id={c.id}

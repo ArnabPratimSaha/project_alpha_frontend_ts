@@ -31,7 +31,7 @@ const Message:FC<MessageInterface>=({mode,members,author,message,time,roles,titl
                 </div>
                 <div className="message-right-div-mentions">
                     {roles.map(r=><div className='role-memtion-div' style={{color:r.color}}><div className='role-memtion-div__overlay' style={{background:r.color}}/>{`@${r.name}`}</div>)}
-                    {members.map(m=><MemberButton mode={mode} id={m.id} key={m.id} name={m.name} isAdmin={m.isAdmin} nickName={m.name} roles={m.roles} tag={m.tag} avatar={m.avatar} />)}
+                    {members.map(m=><MemberButton status={m.status} mode={mode} id={m.id} key={m.id} name={m.name} isAdmin={m.isAdmin} nickName={m.name} roles={m.roles} tag={m.tag} avatar={m.avatar} />)}
                 </div>
                 <div className='message-right-div_message'>
                     {title&&<p className={`${mode}-discord_embeded`}>{title}</p>}
